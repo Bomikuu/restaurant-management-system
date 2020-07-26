@@ -143,3 +143,12 @@ elif os.path.exists(dev):
     exec(open(dev, "rb").read())
 elif os.path.exists(prod):
     exec(open(prod, "rb").read())
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
