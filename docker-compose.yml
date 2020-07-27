@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  frontend:
+    image: node
+    build: ./frontend
+    volumes:
+      - ./frontend:/code
+    ports:
+      - "3000:3000"
+    networks:
+      - back-tier
+    depends_on:
+      - "db1"
+  db1:
+    image: postgres
+    restart: always
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - back-tier
+
+  nginx:
+    image: nginx:1.13
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - back-tier
+    depends_on:
+      - frontend
+
+volumes:
+  pg-data:
+    driver: local
+
+networks:
+  back-tier:
+    driver: "bridge"
