@@ -12,6 +12,15 @@ services:
       - back-tier
     depends_on:
       - "db1"
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/code
+    networks:
+      - back-tier
+    command: ./command.sh
+
   db1:
     image: postgres
     restart: always
