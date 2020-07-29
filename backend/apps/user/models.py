@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 optional = {"blank": True, "null": True}
 
@@ -50,20 +49,7 @@ class Account(AbstractUser):
             super(Account, self).save(*args, **kwargs)
 
 
-class UserType(models.Model):
-    USER_TYPE_CHOICES = (
-        ("Admin", "Admin"),
-        ("KitchenDevice", "KitchenDevice"),
-        ("CashierDevice", "CashierDevice"),
-        ("RestaurantDevice", "RestaurantDevice"),
-    )
-    type = models.CharField(max_length=20, default="")
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
     )
-    api_key = models.CharField(max_length=255, **optional)
-    extra_info = JSONField(default=dict)
-    type = models.ManyToManyField(UserType, related_name="user_types")
