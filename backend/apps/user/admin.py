@@ -10,8 +10,22 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
 
 
+class SoftDeletionAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        qs = self.model.objects.filter(deleted_at__isnull=True)
+        # The below is copied from the base implementation in BaseModelAdmin to prevent other changes in behavior
+        ordering = self.get_ordering(request)
+        if ordering:
+            qs = qs.order_by(*ordering)
+        return qs
+
+    def delete_model(self, request, obj):
+        obj.delete()
+
+
 @admin.register(Account)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(SoftDeletionAdmin):
+    # TODO admin should not be able to see soft deleted objects
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Personal info"), {"fields": ("first_name", "last_name")}),

@@ -2,14 +2,14 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
 from django.db.models import QuerySet
-from datetime import timezone
+import datetime
 
 optional = {"blank": True, "null": True}
 
 
 class SoftDeletionQuerySet(QuerySet):
     def delete(self):
-        return super(SoftDeletionQuerySet, self).update(deleted_at=timezone.now())
+        return super(SoftDeletionQuerySet, self).update(deleted_at=datetime.datetime.now())
 
     def hard_delete(self):
         return super(SoftDeletionQuerySet, self).delete()
@@ -45,7 +45,7 @@ class SoftDeletionModel(models.Model):
         abstract = True
 
     def delete(self):
-        self.deleted_at = timezone.now()
+        self.deleted_at = datetime.datetime.now()
         self.save()
 
     def hard_delete(self):
