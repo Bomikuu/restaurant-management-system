@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # APPS
     "apps.user",
+    "apps.soft_delete"
     # THIRD-PARTY APPS
     "rest_framework",
 ]
