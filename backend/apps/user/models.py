@@ -53,14 +53,7 @@ class SoftDeletionModel(models.Model):
 
 
 class Account(AbstractUser, SoftDeletionModel):
-    # class Meta:
-    #     permissions = (
-    #         ("view_user_list", "Can View User List"),
-    #     )
-
-    # override username to set blank and null to True
     username = models.CharField(blank=True, null=True, max_length=100)
-    # override email to set unique to True
     email = models.EmailField(("email address"), unique=True)
 
     USERNAME_FIELD = "email"
@@ -86,14 +79,6 @@ class Account(AbstractUser, SoftDeletionModel):
             return self.username
         else:
             return ""
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            super(Account, self).save(*args, **kwargs)
-            # my_group = Group.objects.get(name='group_name')
-            # my_group.user_set.add(self)
-        else:
-            super(Account, self).save(*args, **kwargs)
 
 
 class UserProfile(SoftDeletionModel):
