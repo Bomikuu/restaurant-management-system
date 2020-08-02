@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from rest_framework import routers
-from .views import AccountViewSet, GroupViewSet
+from api.views import AccountViewSet, GroupViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', AccountViewSet)

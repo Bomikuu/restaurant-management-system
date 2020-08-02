@@ -1,21 +1,9 @@
-from rest_framework import serializers
-from .models import Account, UserProfile
-from django.contrib.auth.models import Group
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = UserProfile
-        fields = '__all__'
-        # TODO add extra_info JSON
-
-
-class GroupSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Group
-        fields = '__all__'
+from django.core import serializers
+import sys
+import os
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(__dir__, '..'))
+from models import Account, UserProfile  # noqa: E402
 
 
 class AccountSerializer(serializers.HyperlinkedModelSerializer):

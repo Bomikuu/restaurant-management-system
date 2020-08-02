@@ -1,26 +1,17 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-
-from .models import Account, UserProfile
+import sys
+import os
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(__dir__, '..'))
+sys.path.append(os.path.join(__dir__, '..', '..'))
+from soft_delete_utils import SoftDeletionAdmin  # noqa: E402
+from models import Account, UserProfile  # noqa: E402
 
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
-
-
-class SoftDeletionAdmin(admin.ModelAdmin):
-    def get_queryset(self, request):
-        qs = self.model.objects.filter(deleted_at__isnull=True)
-        # The below is copied from the base implementation in BaseModelAdmin to prevent other changes in behavior
-        ordering = self.get_ordering(request)
-        if ordering:
-            qs = qs.order_by(*ordering)
-        return qs
-
-    def delete_model(self, request, obj):
-        obj.delete()
 
 
 @admin.register(Account)
