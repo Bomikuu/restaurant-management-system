@@ -68,20 +68,20 @@ class Account(AbstractUser, SoftDeletionModel):
 
     def __str__(self):
         if self.first_name and self.last_name:
-            return "{}, {} ({})".format(self.last_name, self.first_name, self.username)
+            return f"{self.last_name}, {self.first_name} ({self.username})"
         else:
             return self.username
 
     def __unicode__(self):
         if self.first_name and self.last_name:
-            return "{}, {} ({})".format(self.last_name, self.first_name, self.username)
+            return f"{self.last_name}, {self.first_name} ({self.username})"
         else:
             return self.username
 
     @property
     def get_display_name(self):
         if self.first_name and self.last_name:
-            return "{}, {} ({})".format(self.last_name, self.first_name, self.username)
+            return f"{self.last_name}, {self.first_name} ({self.username})"
         elif self.username:
             return self.username
         else:
