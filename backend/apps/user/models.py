@@ -1,8 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
-from django.db.models import QuerySet
-import datetime
+from apps.soft_delete.models import SoftDeletionModel
 
 optional = {"blank": True, "null": True}
 
