@@ -1,88 +1,101 @@
 <template>
-  <div class="main-container">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">List of Inventory Transactions</h3>
+  <v-container fluid class="pa-0">
+    <div class="main-container">
+      <v-col cols="12">
+        <base-material-card class="px-5 py-3">
+          <template v-slot:heading>
+            <div class="display-2 font-weight-light">
+              Inventory Status
+            </div>
+
+            <div class="subtitle-1 font-weight-light">
+              Inventory on 15th September, 2020
+            </div>
+          </template>
+          <v-card-text>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+            <v-data-table
+              :headers="headers"
+              :items="getInventoryList"
+              :items-per-page="5"
+              :search="search"
+              @click:row="getCurrentItem"
+            />
+          </v-card-text>
+        </base-material-card>
+      </v-col>
+
+      <div class="my-2 add-product-btn" @click="addNewInventory">
+        <v-btn color="success" fab large dark>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </div>
-      <!-- /.card-header -->
-      <div class="card-body">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 10px">#</th>
-              <th>Product Name</th>
-              <th>Date</th>
-              <th style="width: 40px">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <InventoryCell
-              v-for="(item, index) in getInventoryList"
-              :key="`item-cell-${index}`"
-              :item="item"
-              :index="index"
-              :get-item="getCurrentItem"
-            ></InventoryCell>
-          </tbody>
-        </table>
-      </div>
-      <!-- /.card-body -->
-      <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-          <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-        </ul>
-      </div>
+      <AddRecord
+        v-if="showInventoryModal"
+        :show-dialog="showInventoryModal"
+        :toggle-modal="toggleInventoryModal"
+        :item-detail="currentInventory"
+      ></AddRecord>
     </div>
-    <div class="add-product-btn" @click="addNewInventory">
-      <img src="@/assets/images/plus_white.svg" />
-    </div>
-    <AddRecord
-      v-if="showInventoryModal"
-      :show-dialog="showInventoryModal"
-      :toggle-modal="toggleInventoryModal"
-      :item-detail="currentInventory"
-    ></AddRecord>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import AddRecord from "@/components/forms/addrecord.vue";
-import InventoryCell from "@/components/items/inventorycell.vue";
+import AddRecord from '@/components/forms/addrecord.vue'
 
 export default {
   components: {
-    AddRecord,
-    InventoryCell,
+    AddRecord
   },
   data: () => {
     return {
+      search: '',
       showInventoryModal: false,
       currentInventory: null,
-    };
+      headers: [
+        {
+          sortable: false,
+          text: 'Product Name',
+          value: 'product'
+        },
+        {
+          sortable: false,
+          text: 'Date Added',
+          value: 'date'
+        },
+        {
+          sortable: false,
+          text: 'Quantity',
+          value: 'quantity'
+        }
+      ]
+    }
   },
   computed: {
     getInventoryList() {
-      return this.$store.state.inventory.inventoryList;
-    },
+      return this.$store.state.inventory.inventoryList
+    }
   },
   methods: {
     toggleInventoryModal() {
-      this.showInventoryModal = !this.showInventoryModal;
+      this.showInventoryModal = !this.showInventoryModal
     },
     addNewInventory() {
-      this.currentInventory = null;
-      this.toggleInventoryModal();
+      this.currentInventory = null
+      this.toggleInventoryModal()
     },
     getCurrentItem(item) {
-      this.currentInventory = item;
-      this.toggleInventoryModal();
-    },
-  },
-};
+      this.currentInventory = item
+      this.toggleInventoryModal()
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -96,15 +109,9 @@ export default {
 }
 
 .add-product-btn {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 0;
-  right: 2%;
-  padding: 1em;
-  background: #007bff;
-  border-radius: 50%;
+  position: fixed;
+  bottom: 2.5%;
+  right: 2.5%;
 
   img {
     width: 30px;
