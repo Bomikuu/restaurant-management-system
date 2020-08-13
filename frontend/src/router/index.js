@@ -7,12 +7,20 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/views/index.vue"),
-  },
+    component: () => import("@/views/Login.vue"),
+  }, 
+    // users_management
   {
-    path: "/inventory",
-    name: "Inventory",
-    component: () => import("@/views/inventory.vue"),
+    path: '/user/management/',
+    component: () => import('@/views/user_management/index.vue'),
+    children: [
+     // Pages
+     /* {
+        name: 'users_management',
+        path: 'home',
+        component: () => import('@/views/user_management/index.vue'),
+      }*/
+    ],
   },
 ];
 
