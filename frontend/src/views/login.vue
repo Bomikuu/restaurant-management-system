@@ -4,29 +4,36 @@
       <v-container class="fill-height login-container" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="4">
-            <v-img
+            <!-- <v-img
               class="login-logo"
               src="@/assets/images/gentry-logo.jpg"
               alt="Gentry Logo"
-            />
+            /> -->
             <v-card class="elevation-12">
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    label="Login"
-                    name="login"
-                    prepend-icon="mdi-account"
-                    type="text"
-                  ></v-text-field>
+              <v-card-text class="login-input-container">
+                <v-row>
+                  <v-col cols="12" md="6"
+                    ><v-img src="@/assets/login.jpg" alt="Gentry Logo" />
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-form>
+                      <v-text-field
+                        label="Login"
+                        name="login"
+                        prepend-icon="mdi-account"
+                        type="text"
+                      ></v-text-field>
 
-                  <v-text-field
-                    id="password"
-                    label="Password"
-                    name="password"
-                    prepend-icon="mdi-lock"
-                    type="password"
-                  ></v-text-field>
-                </v-form>
+                      <v-text-field
+                        id="password"
+                        label="Password"
+                        name="password"
+                        prepend-icon="mdi-lock"
+                        type="password"
+                      ></v-text-field>
+                    </v-form>
+                  </v-col>
+                </v-row>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -69,5 +76,10 @@ export default {
 .login-logo {
   width: 200px;
   height: 200px;
+}
+
+.login-input-container {
+  border: 1px solid red;
+  padding: 0 !important;
 }
 </style>
