@@ -40,7 +40,13 @@ The `frontend` folder consists of the main frontend files coming from vuejs.
  4. Apply initial migrations using: `python manage.py migrate`
  5. Finally, you may run the server using: `python manage.py runserver <optional: port>`
 
-## Frontend
+### API documentation
+You may choose any of the following links to view the documentation
+
+1. 'localhost:8000/api/swagger/' - View API documentation with Swagger UI
+2. 'localhost:8000/api/redoc/' - View API documentation with ReDoc UI
+3. 'localhost:8000/api/swagger/.json' - Download API documentation in JSON format
+4. 'localhost:8000/api/swagger/.json' - Download API specification in YAML format
 
 ### Development Setup
 
