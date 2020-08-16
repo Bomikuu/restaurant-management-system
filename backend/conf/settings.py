@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "apps.soft_delete",
     # THIRD-PARTY APPS
     "rest_framework",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -151,5 +152,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
