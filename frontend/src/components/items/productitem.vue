@@ -5,62 +5,75 @@
     </div>
 
     <div class="product-summary">
-      <span>{{ product.name }}</span>
-      <span>{{ `₱${product.price}` }}</span>
-      <span>{{ `${product.description}` }}</span>
+      <h4 class="prod-title">{{ product.name }}</h4>
+      <span class="prod-description">{{ `${product.description}` }}</span>
+
+      <div class="prod-divider">
+        <span class="prod-price">{{ `₱${product.price}` }}</span>
+        <v-rating
+          v-model="rating"
+          background-color="orange lighten-3"
+          color="orange"
+        ></v-rating>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-const base64Encode = (data) =>
+const base64Encode = data =>
   new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(data);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+    const reader = new FileReader()
+    reader.readAsDataURL(data)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  })
 
 export default {
   props: {
     product: {
       type: Object,
       default: () => {
-        return {};
-      },
+        return {}
+      }
     },
     getCurrentProduct: {
       type: Function,
       default: () => {
-        return {};
-      },
-    },
+        return {}
+      }
+    }
   },
   data: () => {
     return {
       productImg: null,
-    };
+      rating: 5
+    }
   },
   created() {
     if (this.product.image instanceof File) {
       base64Encode(this.product.image)
-        .then((value) => {
-          this.productImg = value;
+        .then(value => {
+          this.productImg = value
         })
 
         .catch(() => {
-          this.productImg = null;
-        });
+          this.productImg = null
+        })
     }
+  },
+  mounted() {
+    // get product rating
+    this.rating = 2 + 2.5 // Insert Formula here
   },
   methods: {
     getProductImage() {
       return this.productImg
         ? this.productImg
-        : require(`@/assets/images/${this.product.image}`);
-    },
-  },
-};
+        : require(`@/assets/images/${this.product.image}`)
+    }
+  }
+}
 </script>
 
 <style></style>
