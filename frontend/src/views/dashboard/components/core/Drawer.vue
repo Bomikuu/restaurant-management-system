@@ -86,6 +86,16 @@ export default {
         icon: 'mdi-cog-outline',
         title: 'Settings',
         to: '/admin/settings'
+      }, 
+      {
+        icon: 'mdi-account',
+        title: 'Users',
+        to: '/admin/users'
+      },
+      {
+        icon: 'mdi-account-key',
+        title: 'Roles',
+        to: '/admin/roles'
       }
     ]
   }),

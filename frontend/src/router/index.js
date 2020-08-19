@@ -32,6 +32,14 @@ const routes = [
         path: 'settings',
         name: 'Setting',
         component: () => import('@/views/settings.vue')
+      }, {
+        path: 'users',
+        name: 'User',
+        component: () => import('@/views/allUsers.vue')
+      }, {
+        path: 'roles',
+        name: 'Roles',
+        component: () => import('@/views/allRoles.vue')
       }
     ]
   },
@@ -46,18 +54,18 @@ const routes = [
     component: () => import('@/views/Login.vue')
   },
   // users_management
-  {
+  /*{
     path: '/user/management/',
     component: () => import('@/views/user_management/index.vue'),
     children: [
       // Pages
-      /* {
-        name: 'users_management',
-        path: 'home',
+       {
+        name: 'users',
+        path: '/',
         component: () => import('@/views/user_management/index.vue'),
-      }*/
+      }
     ]
-  }
+  }*/
 ]
 
 const router = new VueRouter({
