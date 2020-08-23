@@ -6,18 +6,18 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ('name','price','status','desscription')
+        fields = ('name', 'price', 'status', 'description')
 
-    # def create(self, validated_data):
-    #     password = validated_data.pop('password')
-    #     user = Account(**validated_data)
-    #     user.set_password(password)
-    #     user.save()
-    #     UserProfile.objects.create(user=user)
-    #     return user
+    def create(self, validated_data):
+        product = Product(**validated_data)
+        product.save()
+        return product
 
-    # def update(self, instance, validated_data):
-    #     instance.email = validated_data.get('email', instance.email)
-    #     instance.save()
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.price = validated_data.get('price', instance.price)
+        instance.status = validated_data.get('status', instance.status)
+        instance.description = validated_data.get('description', instance.description)
+        instance.save()
 
-    #     return instance
+        return instance
