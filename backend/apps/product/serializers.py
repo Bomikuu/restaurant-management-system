@@ -6,7 +6,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ('name', 'price', 'status', 'description')
+        fields = ('name', 'price', 'status', 'description', 'image')
 
     def create(self, validated_data):
         product = Product(**validated_data)
@@ -18,6 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.price = validated_data.get('price', instance.price)
         instance.status = validated_data.get('status', instance.status)
         instance.description = validated_data.get('description', instance.description)
+        instance.image = validated_data.get('image', instance.description)
         instance.save()
 
         return instance
