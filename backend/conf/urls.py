@@ -39,10 +39,18 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+    # ADMIN
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('apps.user.urls')),
+
+    # APPS API
+    url(r'^api/user/', include('apps.user.urls')),
+    url(r'^api/product/', include('apps.product.urls')),
+
+    # JWT API
     url(r'^api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # SWAGGER API
     url(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^api/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
