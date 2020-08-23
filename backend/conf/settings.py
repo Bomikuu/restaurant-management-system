@@ -39,10 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     # APPS
+    "apps.api",
     "apps.user",
     "apps.product",
     "apps.soft_delete",
+    
     # THIRD-PARTY APPS
     "rest_framework",
     "drf_yasg",
