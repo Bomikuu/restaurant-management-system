@@ -36,14 +36,9 @@ const routes = [
     ]
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/login.vue')
-  },
-  {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Login.vue')
+    component: () => import('@/views/login.vue')
   },
   // users_management
   {

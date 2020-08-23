@@ -8,16 +8,19 @@
       <v-card-text>
         <v-container>
           <v-row>
-            <div class="product-preview-img" elevation="4" cols="12">
-              <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
-              <img v-else :src="imgThumbnail" />
-              <v-btn
-                class="upload-remove"
-                v-if="productData.image !== null"
-                color="error"
-                @click="removeImg"
-              >Remove Image</v-btn>
-            </div>
+            <v-col align="center" justify="center">
+              <div class="product-preview-img" elevation="4" cols="12">
+                <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
+                <img v-else :src="imgThumbnail" />
+                <v-btn
+                  class="upload-remove"
+                  v-if="productData.image !== null"
+                  color="error"
+                  @click="removeImg"
+                >Remove Image</v-btn>
+              </div>
+            </v-col>
+
             <v-col cols="12">
               <v-file-input
                 v-model="productData.image"

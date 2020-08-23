@@ -30,14 +30,16 @@
 
     <div v-else class="product-list-container">
       <ProductItem
-        v-for="(product, index) in getAllProducts"
+        v-for="(product, index) in getPaginatedItems"
         :key="`product-${product.name}-${index}`"
         :get-current-product="getCurrentProduct"
         :product="product"
       ></ProductItem>
     </div>
 
-    <v-pagination v-model="currentPage" :length="4" circle></v-pagination>
+    <template v-if="getPaginaitonPages > 1">
+      <v-pagination v-model="currentPage" :length="getPaginaitonPages" circle></v-pagination>
+    </template>
 
     <div class="my-2 add-product-btn" @click="addNewProduct">
       <v-btn color="success" fab large dark>
@@ -90,6 +92,14 @@ export default {
       } else {
         return getProduct
       }
+    },
+    getPaginaitonPages() {
+      return Math.round(this.getAllProducts.length / this.itemsPerPage)
+    },
+    getPaginatedItems() {
+      const getIndexNumber =
+        this.currentPage === 1 ? 0 : (this.currentPage - 1) * 8
+      return this.getAllProducts.slice(getIndexNumber, getIndexNumber + 8)
     }
   },
   methods: {
