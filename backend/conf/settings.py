@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     # APPS
+    "apps.api",
     "apps.user",
+    "apps.product",
     "apps.soft_delete",
+    
     # THIRD-PARTY APPS
     "rest_framework",
     "drf_yasg",
@@ -131,6 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # LOCAL SETTINGS
 local = os.path.join(BASE_DIR, "backend", "conf", "local_settings.py")
