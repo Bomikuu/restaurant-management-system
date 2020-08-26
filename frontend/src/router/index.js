@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/admin',
+    path: '/dashboard',
     component: () => import('@/views/dashboard/Index'),
     children: [
       {
@@ -37,7 +37,8 @@ const routes = [
         path: 'users',
         name: 'User',
         component: () => import('@/views/allUsers.vue')
-      }, {
+      },
+      {
         path: 'roles',
         name: 'Roles',
         component: () => import('@/views/allRoles.vue')
