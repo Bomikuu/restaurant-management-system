@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/admin',
+    path: '/dashboard',
     component: () => import('@/views/dashboard/Index'),
     children: [
       {
