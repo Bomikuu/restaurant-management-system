@@ -70,32 +70,32 @@ export default {
       {
         icon: 'mdi-view-dashboard',
         title: 'Dashboard',
-        to: '/admin/index'
+        to: '/dashboard/index'
       },
       {
         icon: 'mdi-view-quilt-outline',
         title: 'Products',
-        to: '/admin/products'
+        to: '/dashboard/products'
       },
       {
         icon: 'mdi-format-list-bulleted-square',
         title: 'Inventory',
-        to: '/admin/inventory'
+        to: '/dashboard/inventory'
       },
       {
         icon: 'mdi-cog-outline',
         title: 'Settings',
-        to: '/admin/settings'
+        to: '/dashboard/settings'
       },
       {
         icon: 'mdi-account',
         title: 'Users',
-        to: '/admin/users'
+        to: '/dashboard/users'
       },
       {
         icon: 'mdi-account-key',
         title: 'Roles',
-        to: '/admin/roles'
+        to: '/dashboard/roles'
       }
     ]
   }),

@@ -17,7 +17,7 @@ class Product(SoftDeletionModel):
     description = models.TextField()
     status = models.IntegerField(choices=STATUS_CHOICES)
     image = models.ImageField(
-        verbose_name="Product Image", upload_to="products/images/", **optional
+        verbose_name="Product Image", null=True, blank=True, default=None
     )
 
     def __str__(self):

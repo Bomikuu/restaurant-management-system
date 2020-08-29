@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import products from './modules/products.js'
 import inventory from './modules/inventory.js'
+import API from '@/utils/utils'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,14 @@ export default new Vuex.Store({
     }
   },
   getters: {},
-  actions: {},
+  actions: {
+    loginUser({ commit }, data) {
+      console.log(data)
+      return API.postAPI(`token`, data).then(response => {
+        console.log(response)
+        commit('')
+      })
+    }
+  },
   modules: { products, inventory }
 })

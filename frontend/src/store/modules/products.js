@@ -1,128 +1,9 @@
+import API from '@/utils/utils'
+
 export default {
   state: {
     namespaced: true,
-    products: [
-      {
-        id: 0,
-        name: 'Buttered Chicken',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '1.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 1,
-        name: 'Roasted Chicken',
-        price: '250.00',
-        description: 'I am a chicken',
-        image: '2.jpg',
-        status: 'Available'
-      },
-      {
-        id: 2,
-        name: 'Roasted Chicken BBQ',
-        price: '300.00',
-        description: 'I am a chicken',
-        image: '3.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 3,
-        name: 'Chicken Fries with Gulay',
-        price: '350.00',
-        description: 'I am a chicken',
-        image: '4.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 4,
-        name: 'Chicken Parmesan with Fries',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '5.jpg',
-        status: 'Available'
-      },
-      {
-        id: 0,
-        name: 'Buttered Chicken',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '1.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 1,
-        name: 'Roasted Chicken',
-        price: '250.00',
-        description: 'I am a chicken',
-        image: '2.jpg',
-        status: 'Available'
-      },
-      {
-        id: 2,
-        name: 'Roasted Chicken BBQ',
-        price: '300.00',
-        description: 'I am a chicken',
-        image: '3.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 3,
-        name: 'Chicken Fries with Gulay',
-        price: '350.00',
-        description: 'I am a chicken',
-        image: '4.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 4,
-        name: 'Chicken Parmesan with Fries',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '5.jpg',
-        status: 'Available'
-      },
-      {
-        id: 0,
-        name: 'Buttered Chicken',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '1.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 1,
-        name: 'Roasted Chicken',
-        price: '250.00',
-        description: 'I am a chicken',
-        image: '2.jpg',
-        status: 'Available'
-      },
-      {
-        id: 2,
-        name: 'Roasted Chicken BBQ',
-        price: '300.00',
-        description: 'I am a chicken',
-        image: '3.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 3,
-        name: 'Chicken Fries with Gulay',
-        price: '350.00',
-        description: 'I am a chicken',
-        image: '4.jpeg',
-        status: 'Available'
-      },
-      {
-        id: 4,
-        name: 'Chicken Parmesan with Fries',
-        price: '200.00',
-        description: 'I am a chicken',
-        image: '5.jpg',
-        status: 'Available'
-      }
-    ],
+    products: [],
     productFilter: ''
   },
   getters: {
@@ -148,5 +29,20 @@ export default {
       state.productFilter = value
     }
   },
-  actions: {}
+  actions: {
+    fetchProductList({ commit }) {
+      API.getAPI('products').then(response => {
+        commit('setAllProducts', response.data)
+      })
+    },
+    getProductDetail() {},
+    async createProductDetail({ dispatch }, data) {
+      await API.postAPI('products', data).then(response => {
+        if (response) {
+          dispatch('fetchProductList')
+        }
+      })
+    },
+    patchProductDetail() {}
+  }
 }

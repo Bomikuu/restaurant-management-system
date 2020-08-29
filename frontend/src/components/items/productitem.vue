@@ -69,8 +69,8 @@ export default {
   methods: {
     getProductImage() {
       return this.productImg
-        ? this.productImg
-        : require(`@/assets/images/${this.product.image}`)
+        ? require(`@/assets/images/5.jpg`)
+        : require(`@/assets/images/5.jpg`)
     }
   }
 }
