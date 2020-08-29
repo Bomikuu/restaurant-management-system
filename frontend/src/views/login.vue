@@ -16,16 +16,23 @@
               <div class="login-container-input">
                 Sign In
                 <v-form>
-                  <v-text-field label="Login" name="login" prepend-icon="mdi-account" type="text"></v-text-field>
+                  <v-text-field
+                    v-model="email"
+                    label="Login"
+                    name="login"
+                    prepend-icon="mdi-account"
+                    type="text"
+                  ></v-text-field>
 
                   <v-text-field
+                    v-model="password"
                     id="password"
                     label="Password"
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
                   ></v-text-field>
-                  <v-btn color="primary">Login</v-btn>
+                  <v-btn color="primary" @click="postUserLogin">Login</v-btn>
                 </v-form>
               </div>
             </v-card-text>
@@ -40,6 +47,22 @@
 export default {
   props: {
     source: String
+  },
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    async postUserLogin() {
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+      const result = await this.$store.dispatch('loginUser', payload)
+      console.log('this is the result', result)
+    }
   }
 }
 </script>

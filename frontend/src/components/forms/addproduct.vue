@@ -1,5 +1,4 @@
-<template
-  >
+<template>
   <v-dialog v-model="showDialog" @click:outside="toggleModal" max-width="600px">
     <v-card>
       <v-card-title>
@@ -10,14 +9,19 @@
           <v-row>
             <v-col align="center" justify="center">
               <div class="product-preview-img" elevation="4" cols="12">
-                <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
+                <img
+                  v-if="productData.image === null"
+                  class
+                  src="@/assets/images/food.svg"
+                />
                 <img v-else :src="imgThumbnail" />
                 <v-btn
                   class="upload-remove"
                   v-if="productData.image !== null"
                   color="error"
                   @click="removeImg"
-                >Remove Image</v-btn>
+                  >Remove Image</v-btn
+                >
               </div>
             </v-col>
 
@@ -32,19 +36,31 @@
               ></v-file-input>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="productData.name" label="Product Name*" required></v-text-field>
+              <v-text-field
+                v-model="productData.name"
+                label="Product Name*"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="productData.price" label="Price*" required></v-text-field>
+              <v-text-field
+                v-model="productData.price"
+                label="Price*"
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="productData.description" label="Description*" required></v-text-field>
+              <v-text-field
+                v-model="productData.description"
+                label="Description*"
+                required
+              ></v-text-field>
             </v-col>
 
             <v-col cols="12" sm="6">
               <v-select
                 v-model="productData.status"
-                :items="['Available', 'Not Available', 'Restock', 'Archived']"
+                :items="['Available', 'Unvailable', 'Restock', 'Archived']"
                 label="Product Status"
                 required
               ></v-select>
@@ -55,7 +71,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="showDialog = false">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="showDialog = false"
+          >Close</v-btn
+        >
         <v-btn color="blue darken-1" text @click="submitData">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -144,12 +162,18 @@ export default {
         currentList[currentIndex] = this.productData
         setTimeout(() => {
           this.$store.commit('setAllProducts', currentList)
+          this.toggleModal()
         }, 100)
       } else {
-        await this.$store.commit('setProducts', this.productData)
+        // await this.$store.commit('setProducts', this.productData)
+        const result = await this.$store.dispatch(
+          'createProductDetail',
+          this.productData
+        )
+        if (result) {
+          this.toggleModal()
+        }
       }
-
-      this.toggleModal()
     }
   }
 }
