@@ -21,11 +21,16 @@ export default class Utils {
       })
   }
 
-  static postAPI(url, params) {
+  static postAPI(url, params, token) {
     console.log(params)
-    // const headers = { 'Content-Type': 'application/json' }
+    const headers = { 'Content-Type': 'application/json' }
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
     return axios
-      .post(`${this.getBaseURL()}${url}`, params)
+      .post(`${this.getBaseURL()}${url}`, params, { headers: headers })
       .then(response => {
         return response
       })
@@ -33,4 +38,13 @@ export default class Utils {
         console.log(error)
       })
   }
+}
+
+export const getFormData = payload => {
+  const formData = new FormData()
+
+  Object.entries(payload).map(data => {
+    formData.append(data[0], data[1])
+  })
+  return formData
 }

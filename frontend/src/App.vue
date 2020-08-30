@@ -10,6 +10,7 @@ export default {
       'setCurrentUser',
       JSON.parse(localStorage.getItem('currentUser'))
     )
+    console.log(localStorage.getItem('currentUser'))
   }
 }
 </script>

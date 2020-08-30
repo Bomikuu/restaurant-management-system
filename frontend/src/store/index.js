@@ -28,8 +28,9 @@ export default new Vuex.Store({
   getters: {},
   actions: {
     loginUser({ commit }, data) {
+      localStorage.removeItem('currentUser')
       return API.postAPI(`token/`, data).then(response => {
-        const userData = { ...data.email, ...response.data }
+        const userData = { ...data, ...response.data }
         commit('setCurrentUser', userData)
         localStorage.setItem('currentUser', JSON.stringify(userData))
         return response
