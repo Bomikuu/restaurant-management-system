@@ -15,13 +15,14 @@
               </div>
               <div class="login-container-input">
                 Sign In
-                <v-form>
+                <v-form ref="form">
                   <v-text-field
                     v-model="email"
                     label="Login"
                     name="login"
                     prepend-icon="mdi-account"
                     type="text"
+                    :rules="emailRules"
                   ></v-text-field>
 
                   <v-text-field
@@ -31,6 +32,7 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
+                    :rules="passwordRules"
                   ></v-text-field>
                   <v-btn color="primary" @click="postUserLogin">Login</v-btn>
                 </v-form>
@@ -44,6 +46,7 @@
 </template>
 
 <script>
+// import axios from 'axios'
 export default {
   props: {
     source: String
@@ -51,17 +54,28 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [v => !!v || 'Password is required']
     }
   },
   methods: {
     async postUserLogin() {
+      this.$refs.form.validate()
       const payload = {
         email: this.email,
         password: this.password
       }
+
       const result = await this.$store.dispatch('loginUser', payload)
-      console.log('this is the result', result)
+      if (result.data) {
+        this.$router.push('/dashboard')
+      } else {
+        // do error message
+      }
     }
   }
 }

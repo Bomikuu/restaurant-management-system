@@ -49,10 +49,14 @@ INSTALLED_APPS = [
     # THIRD-PARTY APPS
     "rest_framework",
     "drf_yasg",
+    'corsheaders',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -138,9 +142,8 @@ STATIC_ROOT = ''
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+STATICFILES_DIRS = os.path.join(PROJECT_ROOT, 'static'),
+
 
 # LOCAL SETTINGS
 local = os.path.join(BASE_DIR, "backend", "conf", "local_settings.py")

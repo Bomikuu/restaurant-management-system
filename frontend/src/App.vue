@@ -4,6 +4,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    this.$store.commit(
+      'setCurrentUser',
+      JSON.parse(localStorage.getItem('currentUser'))
+    )
+  }
 }
 </script>

@@ -21,11 +21,11 @@ export default class Utils {
       })
   }
 
-  static postAPI(url, body) {
-    console.log(body)
-    const headers = { 'Content-Type': 'application/json' }
+  static postAPI(url, params) {
+    console.log(params)
+    // const headers = { 'Content-Type': 'application/json' }
     return axios
-      .post(`${this.getBaseURL()}${url}`, body, headers)
+      .post(`${this.getBaseURL()}${url}`, params)
       .then(response => {
         return response
       })

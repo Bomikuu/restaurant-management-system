@@ -1,4 +1,5 @@
 import API from '@/utils/utils'
+import axios from 'axios'
 
 export default {
   state: {
@@ -36,12 +37,20 @@ export default {
       })
     },
     getProductDetail() {},
-    async createProductDetail({ dispatch }, data) {
-      await API.postAPI('products', data).then(response => {
-        if (response) {
-          dispatch('fetchProductList')
-        }
-      })
+    async createProductDetail({ state, dispatch, rootState }, data) {
+      console.log(state, dispatch, data)
+      console.log('ROOT', rootState)
+      // return await API.postAPI('products/', data).then(response => {
+      //   console.log(response)
+      //   if (response) {
+      //     dispatch('fetchProductList')
+      //   }
+      //   return response
+      // })
+      //   const config = {
+      //     headers: { Authorization: `Bearer ${}`}
+      //   }
+      axios.post('/api/products/', data)
     },
     patchProductDetail() {}
   }
