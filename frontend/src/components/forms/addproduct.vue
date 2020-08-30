@@ -9,19 +9,14 @@
           <v-row>
             <v-col align="center" justify="center">
               <div class="product-preview-img" elevation="4" cols="12">
-                <img
-                  v-if="productData.image === null"
-                  class
-                  src="@/assets/images/food.svg"
-                />
+                <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
                 <img v-else :src="imgThumbnail" />
                 <v-btn
                   class="upload-remove"
                   v-if="productData.image !== null"
                   color="error"
                   @click="removeImg"
-                  >Remove Image</v-btn
-                >
+                >Remove Image</v-btn>
               </div>
             </v-col>
 
@@ -36,25 +31,13 @@
               ></v-file-input>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.name"
-                label="Product Name*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.name" label="Product Name*" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.price"
-                label="Price*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.price" label="Price*" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.description"
-                label="Description*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.description" label="Description*" required></v-text-field>
             </v-col>
 
             <v-col cols="12" sm="6">
@@ -71,9 +54,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="showDialog = false"
-          >Close</v-btn
-        >
+        <v-btn color="blue darken-1" text @click="showDialog = false">Close</v-btn>
         <v-btn color="blue darken-1" text @click="submitData">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -81,6 +62,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 const base64Encode = data =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -165,6 +148,16 @@ export default {
           this.toggleModal()
         }, 100)
       } else {
+        const payload = {
+          email: 'mico@gmail.com',
+          first_name: 'Mico',
+          last_name: 'Dahang',
+          password: 'admin123'
+        }
+
+        axios.post('/api/users/', payload).then(response => {
+          console.log(response)
+        })
         // await this.$store.commit('setProducts', this.productData)
         const result = await this.$store.dispatch(
           'createProductDetail',
