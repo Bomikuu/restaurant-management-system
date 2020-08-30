@@ -27,6 +27,7 @@ schema_view = get_schema_view(
 router = routers.DefaultRouter()
 router.registry.extend(product_router.registry)
 router.registry.extend(user_router.registry)
+
 urlpatterns = [
     # APPS API
     url(r'^', include(router.urls)),
