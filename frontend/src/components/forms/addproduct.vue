@@ -43,7 +43,9 @@
             <v-col cols="12" sm="6">
               <v-select
                 v-model="productData.status"
-                :items="['Available', 'Unvailable', 'Restock', 'Archived']"
+                item-text="name"
+                item-value="value"
+                :items="statusItems"
                 label="Product Status"
                 required
               ></v-select>
@@ -62,8 +64,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 const base64Encode = data =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -100,7 +100,21 @@ export default {
         status: '',
         image: null
       },
-      imgThumbnail: null
+      imgThumbnail: null,
+      statusItems: [
+        {
+          name: 'Availalbe',
+          value: 0
+        },
+        {
+          name: 'Unavailable',
+          value: 1
+        },
+        {
+          name: 'Archive',
+          value: 2
+        }
+      ]
     }
   },
   created() {
@@ -148,16 +162,6 @@ export default {
           this.toggleModal()
         }, 100)
       } else {
-        const payload = {
-          email: 'mico@gmail.com',
-          first_name: 'Mico',
-          last_name: 'Dahang',
-          password: 'admin123'
-        }
-
-        axios.post('/api/users/', payload).then(response => {
-          console.log(response)
-        })
         // await this.$store.commit('setProducts', this.productData)
         const result = await this.$store.dispatch(
           'createProductDetail',
