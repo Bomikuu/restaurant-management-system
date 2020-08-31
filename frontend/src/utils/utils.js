@@ -5,12 +5,18 @@ export default class Utils {
     return '/api/'
   }
 
-  static getAPI(url) {
+  static getAPI(url, token) {
+    const headers = { 'Content-Type': 'application/json' }
+
+    if (token) {
+      headers['authorization'] = `Bearer ${token}`
+    }
+
+    console.log(headers)
+
     return axios
       .get(`${this.getBaseURL()}${url}`, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: headers
       })
       .then(response => {
         return response
@@ -26,7 +32,7 @@ export default class Utils {
     const headers = { 'Content-Type': 'application/json' }
 
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers['authorization'] = `Bearer ${token}`
     }
 
     return axios
@@ -41,6 +47,7 @@ export default class Utils {
 }
 
 export const getFormData = payload => {
+  console.log(payload)
   const formData = new FormData()
 
   Object.entries(payload).map(data => {
