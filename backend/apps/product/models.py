@@ -6,10 +6,12 @@ optional = {"blank": True, "null": True}
 class Product(SoftDeletionModel):
     STATUS_UNAVAILABLE = 0
     STATUS_AVAILABLE = 1
+    STATUS_ARCHIVE = 2
 
     STATUS_CHOICES = (
         (STATUS_UNAVAILABLE, "Unavailable"),
-        (STATUS_AVAILABLE, "Available")
+        (STATUS_AVAILABLE, "Available"),
+        (STATUS_ARCHIVE, "Archive"),
     )
 
     name = models.CharField(max_length=100)
