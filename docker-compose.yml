@@ -17,6 +17,7 @@ services:
     build: ./backend
     volumes:
       - ./backend:/code
+      - static:/static
     networks:
       - back-tier
     command: ./command.sh
@@ -38,6 +39,7 @@ services:
     image: nginx:1.13
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - static:/static
     networks:
       - back-tier
     depends_on:
@@ -45,6 +47,8 @@ services:
 
 volumes:
   pg-data:
+    driver: local
+  static:
     driver: local
 
 networks:
