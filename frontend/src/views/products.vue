@@ -11,13 +11,7 @@
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
-        <v-select
-          :items="sortItems"
-          filled
-          label="Sort Products"
-          dense
-          @change="selectFilterMode"
-        ></v-select>
+        <v-select :items="sortItems" filled label="Sort Products" dense @change="selectFilterMode"></v-select>
       </v-col>
     </v-row>
 
@@ -25,16 +19,12 @@
       <template v-if="isFilterMode">
         <img src="@/assets/images/search-not-found.png" />
         <h4 class="empty-title">Sorry, no result found.</h4>
-        <span class="empty-subtitle"
-          >What you searched did not exist. Try searching again.</span
-        >
+        <span class="empty-subtitle">What you searched did not exist. Try searching again.</span>
       </template>
       <template v-else>
         <img src="@/assets/images/boxes.svg" />
         <h4 class="empty-title">No products found.</h4>
-        <span class="empty-subtitle"
-          >Current list of Product is empty. Add some product.</span
-        >
+        <span class="empty-subtitle">Current list of Product is empty. Add some product.</span>
       </template>
     </div>
 
@@ -48,11 +38,7 @@
     </div>
 
     <template v-if="getPaginaitonPages > 1">
-      <v-pagination
-        v-model="currentPage"
-        :length="getPaginaitonPages"
-        circle
-      ></v-pagination>
+      <v-pagination v-model="currentPage" :length="getPaginaitonPages" circle></v-pagination>
     </template>
 
     <div class="my-2 add-product-btn" @click="addNewProduct">
@@ -87,7 +73,7 @@ export default {
       searchFilter: '',
       currentPage: 1,
       itemsPerPage: 8,
-      sortItems: ['Available', 'Unavailable', 'Restock', 'Archived']
+      sortItems: ['Available', 'Unavailable', 'Archived']
     }
   },
   computed: {
