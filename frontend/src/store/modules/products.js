@@ -1,4 +1,5 @@
-import { API, getFormData } from '@/utils/utils'
+import { getFormData } from '@/utils/utils'
+import API from '@/utils/utils'
 import axios from 'axios'
 
 export default {
@@ -34,7 +35,7 @@ export default {
     fetchProductList({ commit, rootState }) {
       const token = rootState.currentUser.access
       console.log(token)
-      API.getAPI('products').then(response => {
+      API.getAPI('products/').then(response => {
         commit('setAllProducts', response.data)
       })
       // axios
@@ -67,12 +68,10 @@ export default {
       const token = rootState.currentUser.access
       const formData = getFormData(params)
 
-      console.log(formData)
-
       axios
         .post(`/api/products/`, formData, {
           headers: {
-            Authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`
           }
         })
         .then(response => {
