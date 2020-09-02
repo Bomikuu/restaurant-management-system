@@ -33,8 +33,8 @@ urlpatterns = [
     url(r'^', include(router.urls)),
 
     # JWT API
-    url(r'^token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     url(r'^token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'^token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 
     # SWAGGER API
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
