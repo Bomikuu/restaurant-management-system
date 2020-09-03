@@ -6,11 +6,12 @@
 export default {
   name: 'App',
   created() {
-    this.$store.commit(
-      'setCurrentUser',
-      JSON.parse(localStorage.getItem('currentUser'))
-    )
-    console.log(localStorage.getItem('currentUser'))
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+    console.log(currentUser)
+    if (currentUser) {
+      this.$store.commit('setCurrentUser', currentUser)
+    }
   },
   computed: {
     getCurrentUser() {
@@ -19,7 +20,7 @@ export default {
   },
 
   async mounted() {
-    if (this.getCurrentUser) {
+    if (this.getCurrentUser !== null) {
       if (this.getMinutes() > 5) {
         //refresh token
         this.refreshToken()
@@ -29,6 +30,11 @@ export default {
             this.refreshToken()
           }
         }, 5000)
+      }
+    } else {
+      // Redirect back to Login page if not logged in
+      if (window.location.pathname !== '/') {
+        window.location = '/'
       }
     }
   },
