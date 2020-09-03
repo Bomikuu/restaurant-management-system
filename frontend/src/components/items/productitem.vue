@@ -1,7 +1,11 @@
 <template>
   <div class="product-container" @click="getCurrentProduct(product)">
     <div class="product-img-thumbnail">
-      <img :src="getProductImage()" :alt="product.name" />
+      <img
+        :src="getProductImage()"
+        :class="`${productImg ? '' : 'product-img-null' }`"
+        :alt="product.name"
+      />
     </div>
 
     <div class="product-summary">
@@ -10,11 +14,7 @@
 
       <div class="prod-divider">
         <span class="prod-price">{{ `₱${product.price}` }}</span>
-        <v-rating
-          v-model="rating"
-          background-color="orange lighten-3"
-          color="orange"
-        ></v-rating>
+        <v-rating v-model="rating" background-color="orange lighten-3" color="orange"></v-rating>
       </div>
     </div>
   </div>
@@ -60,6 +60,8 @@ export default {
         .catch(() => {
           this.productImg = null
         })
+    } else if (this.product) {
+      this.productImg = this.product.image
     }
   },
   mounted() {
@@ -69,11 +71,15 @@ export default {
   methods: {
     getProductImage() {
       return this.productImg
-        ? require(`@/assets/images/5.jpg`)
-        : require(`@/assets/images/5.jpg`)
+        ? this.productImg
+        : require(`@/assets/images/food.svg`)
     }
   }
 }
 </script>
 
-<style></style>
+<style>
+.product-img-null {
+  object-fit: contain !important;
+}
+</style>
