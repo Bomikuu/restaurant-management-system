@@ -12,8 +12,6 @@ export default class Utils {
       headers['authorization'] = `Bearer ${token}`
     }
 
-    console.log(headers)
-
     return axios
       .get(`${this.getBaseURL()}${url}`, {
         headers: headers
@@ -47,11 +45,14 @@ export default class Utils {
 }
 
 export const getFormData = payload => {
-  console.log(payload)
   const formData = new FormData()
-
+  const isEditMode = Object.prototype.hasOwnProperty.call(payload, 'id')
   Object.entries(payload).map(data => {
-    formData.append(data[0], data[1])
+    if (isEditMode && data[0] === 'image' && !(data[1] instanceof File)) {
+      // do nothing
+    } else {
+      formData.append(data[0], data[1])
+    }
   })
   return formData
 }
