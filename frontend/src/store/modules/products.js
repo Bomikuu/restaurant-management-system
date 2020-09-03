@@ -11,7 +11,7 @@ export default {
   getters: {
     getActiveProducts(state) {
       return state.products.filter(prod => {
-        return prod.status !== 'Archived'
+        return prod.status !== 2
       })
     },
     getFilteredProducts(state) {
@@ -34,67 +34,41 @@ export default {
   actions: {
     fetchProductList({ commit, rootState }) {
       const token = rootState.currentUser.access
-      console.log(token)
-      API.getAPI('products/').then(response => {
+
+      API.getAPI('products/', token).then(response => {
         commit('setAllProducts', response.data)
       })
-      // axios
-      //   .get(`/api/products/`, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`
-      //     }
-      //   })
-      //   .then(response => {
-      //     console.log('RESPONSE', response)
-      //     commit('setAllProducts', response.data)
-      //     return response
-      //   })
-      //   .finally(() => {})
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
     },
     getProductDetail() {},
     async createProductDetail({ dispatch, rootState }, params) {
-      console.log('ROOT', rootState)
-      // return await API.postAPI('products/', data).then(response => {
-      //   console.log(response)
-      //   if (response) {
-      //     dispatch('fetchProductList')
-      //   }
-      //   return response
-      // })
-
       const token = rootState.currentUser.access
       const formData = getFormData(params)
 
-      axios
-        .post(`/api/products/`, formData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          console.log('RESPONSE', response)
+      return await API.postAPI('products/', formData, token).then(response => {
+        console.log(response)
+        if (response) {
           dispatch('fetchProductList')
-          return response
-        })
-        .finally(() => {})
-        .catch(error => {
-          console.log(error)
-        })
+        }
+        return response
+      })
     },
     patchProductDetail({ rootState, dispatch }, data) {
       const token = rootState.currentUser.access
       const formData = getFormData(data)
 
+      const headers = { 'Content-Type': 'application/json' }
+      if (token) {
+        headers['authorization'] = `Bearer ${token}`
+      }
+
+      console.log(data)
+
       return axios
-        .post(`/api/products/${data.id}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        .patch(`/api/products/${data.id}/`, formData, {
+          headers: headers
         })
         .then(response => {
+          console.log('PUT', response)
           return response
         })
         .finally(() => {

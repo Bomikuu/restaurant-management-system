@@ -11,7 +11,15 @@
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
-        <v-select :items="sortItems" filled label="Sort Products" dense @change="selectFilterMode"></v-select>
+        <v-select
+          item-text="name"
+          item-value="value"
+          :items="statusItems"
+          filled
+          label="Sort Products"
+          dense
+          @change="selectFilterMode"
+        ></v-select>
       </v-col>
     </v-row>
 
@@ -73,7 +81,20 @@ export default {
       searchFilter: '',
       currentPage: 1,
       itemsPerPage: 8,
-      sortItems: ['Available', 'Unavailable', 'Archived']
+      statusItems: [
+        {
+          name: 'Availalbe',
+          value: 0
+        },
+        {
+          name: 'Unavailable',
+          value: 1
+        },
+        {
+          name: 'Archive',
+          value: 2
+        }
+      ]
     }
   },
   computed: {
@@ -94,7 +115,7 @@ export default {
       }
     },
     getPaginaitonPages() {
-      return Math.round(this.getAllProducts.length / this.itemsPerPage)
+      return Math.ceil(this.getAllProducts.length / this.itemsPerPage)
     },
     getPaginatedItems() {
       const getIndexNumber =
