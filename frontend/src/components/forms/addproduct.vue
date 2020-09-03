@@ -123,7 +123,6 @@ export default {
       Object.entries(this.productDetail).map(data => {
         this.productData[data[0]] = data[1]
       })
-
       if (this.productDetail.image instanceof File) {
         base64Encode(this.productDetail.image)
           .then(res => {
@@ -133,6 +132,8 @@ export default {
           .catch(() => {
             this.imgThumbnail = null
           })
+      } else if (this.productDetail.image) {
+        this.imgThumbnail = this.productDetail.image
       }
     }
   },
@@ -153,15 +154,27 @@ export default {
       this.imgThumbnail = null
     },
     async submitData() {
+      //if on edit mode
       if (this.productDetail) {
-        const currentList = this.$store.state.products.products
-        const currentIndex = currentList.indexOf(this.productDetail)
-        currentList[currentIndex] = this.productData
-        setTimeout(() => {
-          this.$store.commit('setAllProducts', currentList)
+        // const currentList = this.$store.state.products.products
+        // const currentIndex = currentList.indexOf(this.productDetail)
+        // currentList[currentIndex] = this.productData
+        // setTimeout(() => {
+        //   this.$store.commit('setAllProducts', currentList)
+        //   this.toggleModal()
+        // }, 100)
+
+        const result = await this.$store.dispatch(
+          'patchProductDetail',
+          this.productData
+        )
+
+        if (result) {
           this.toggleModal()
-        }, 100)
-      } else {
+        }
+      }
+      // product creation
+      else {
         // await this.$store.commit('setProducts', this.productData)
         const result = await this.$store.dispatch(
           'createProductDetail',
