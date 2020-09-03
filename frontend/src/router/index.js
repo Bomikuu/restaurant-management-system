@@ -34,6 +34,11 @@ const routes = [
         component: () => import('@/views/settings.vue')
       },
       {
+        path: 'activities',
+        name: 'Activity Log',
+        component: () => import('@/views/activitylog.vue')
+      },
+      {
         path: 'users',
         name: 'User',
         component: () => import('@/views/allUsers.vue')

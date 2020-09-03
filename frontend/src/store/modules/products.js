@@ -1,3 +1,4 @@
+import { getFormData } from '@/utils/utils'
 import API from '@/utils/utils'
 import axios from 'axios'
 
@@ -10,7 +11,7 @@ export default {
   getters: {
     getActiveProducts(state) {
       return state.products.filter(prod => {
-        return prod.status !== 'Archived'
+        return prod.status !== 2
       })
     },
     getFilteredProducts(state) {
@@ -31,27 +32,52 @@ export default {
     }
   },
   actions: {
-    fetchProductList({ commit }) {
-      API.getAPI('products').then(response => {
+    fetchProductList({ commit, rootState }) {
+      const token = rootState.currentUser.access
+
+      API.getAPI('products/', token).then(response => {
         commit('setAllProducts', response.data)
       })
     },
     getProductDetail() {},
-    async createProductDetail({ state, dispatch, rootState }, data) {
-      console.log(state, dispatch, data)
-      console.log('ROOT', rootState)
-      // return await API.postAPI('products/', data).then(response => {
-      //   console.log(response)
-      //   if (response) {
-      //     dispatch('fetchProductList')
-      //   }
-      //   return response
-      // })
-      //   const config = {
-      //     headers: { Authorization: `Bearer ${}`}
-      //   }
-      axios.post('/api/products/', data)
+    async createProductDetail({ dispatch, rootState }, params) {
+      const token = rootState.currentUser.access
+      const formData = getFormData(params)
+
+      return await API.postAPI('products/', formData, token).then(response => {
+        console.log(response)
+        if (response) {
+          dispatch('fetchProductList')
+        }
+        return response
+      })
     },
-    patchProductDetail() {}
+    patchProductDetail({ rootState, dispatch }, data) {
+      const token = rootState.currentUser.access
+      const formData = getFormData(data)
+
+      const headers = { 'Content-Type': 'application/json' }
+      if (token) {
+        headers['authorization'] = `Bearer ${token}`
+      }
+
+      console.log(data)
+
+      return axios
+        .patch(`/api/products/${data.id}/`, formData, {
+          headers: headers
+        })
+        .then(response => {
+          console.log('PUT', response)
+          return response
+        })
+        .finally(() => {
+          dispatch('fetchProductList')
+        })
+        .catch(error => {
+          console.log(error)
+          return error
+        })
+    }
   }
 }

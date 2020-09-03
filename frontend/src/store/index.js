@@ -28,8 +28,25 @@ export default new Vuex.Store({
   getters: {},
   actions: {
     loginUser({ commit }, data) {
+      localStorage.removeItem('currentUser')
       return API.postAPI(`token/`, data).then(response => {
-        const userData = { ...data.email, ...response.data }
+        const userData = { ...data, ...response.data }
+        userData['expire_data'] = new Date()
+        commit('setCurrentUser', userData)
+        localStorage.setItem('currentUser', JSON.stringify(userData))
+        return response
+      })
+    },
+
+    refreshToken({ commit, rootState }) {
+      const { email, password } = rootState.currentUser
+      const payload = {
+        email,
+        password
+      }
+      return API.postAPI('token/refresh/', payload).then(response => {
+        const userData = { ...payload, ...response.data }
+        userData['expire_data'] = new Date()
         commit('setCurrentUser', userData)
         localStorage.setItem('currentUser', JSON.stringify(userData))
         return response

@@ -9,19 +9,14 @@
           <v-row>
             <v-col align="center" justify="center">
               <div class="product-preview-img" elevation="4" cols="12">
-                <img
-                  v-if="productData.image === null"
-                  class
-                  src="@/assets/images/food.svg"
-                />
+                <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
                 <img v-else :src="imgThumbnail" />
                 <v-btn
                   class="upload-remove"
                   v-if="productData.image !== null"
                   color="error"
                   @click="removeImg"
-                  >Remove Image</v-btn
-                >
+                >Remove Image</v-btn>
               </div>
             </v-col>
 
@@ -36,31 +31,21 @@
               ></v-file-input>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.name"
-                label="Product Name*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.name" label="Product Name*" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.price"
-                label="Price*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.price" label="Price*" required></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="productData.description"
-                label="Description*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="productData.description" label="Description*" required></v-text-field>
             </v-col>
 
             <v-col cols="12" sm="6">
               <v-select
                 v-model="productData.status"
-                :items="['Available', 'Unvailable', 'Restock', 'Archived']"
+                item-text="name"
+                item-value="value"
+                :items="statusItems"
                 label="Product Status"
                 required
               ></v-select>
@@ -71,9 +56,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="showDialog = false"
-          >Close</v-btn
-        >
+        <v-btn color="blue darken-1" text @click="showDialog = false">Close</v-btn>
         <v-btn color="blue darken-1" text @click="submitData">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -117,7 +100,21 @@ export default {
         status: '',
         image: null
       },
-      imgThumbnail: null
+      imgThumbnail: null,
+      statusItems: [
+        {
+          name: 'Availalbe',
+          value: 0
+        },
+        {
+          name: 'Unavailable',
+          value: 1
+        },
+        {
+          name: 'Archive',
+          value: 2
+        }
+      ]
     }
   },
   created() {
@@ -126,7 +123,6 @@ export default {
       Object.entries(this.productDetail).map(data => {
         this.productData[data[0]] = data[1]
       })
-
       if (this.productDetail.image instanceof File) {
         base64Encode(this.productDetail.image)
           .then(res => {
@@ -136,6 +132,8 @@ export default {
           .catch(() => {
             this.imgThumbnail = null
           })
+      } else if (this.productDetail.image) {
+        this.imgThumbnail = this.productDetail.image
       }
     }
   },
@@ -156,15 +154,27 @@ export default {
       this.imgThumbnail = null
     },
     async submitData() {
+      //if on edit mode
       if (this.productDetail) {
-        const currentList = this.$store.state.products.products
-        const currentIndex = currentList.indexOf(this.productDetail)
-        currentList[currentIndex] = this.productData
-        setTimeout(() => {
-          this.$store.commit('setAllProducts', currentList)
+        // const currentList = this.$store.state.products.products
+        // const currentIndex = currentList.indexOf(this.productDetail)
+        // currentList[currentIndex] = this.productData
+        // setTimeout(() => {
+        //   this.$store.commit('setAllProducts', currentList)
+        //   this.toggleModal()
+        // }, 100)
+
+        const result = await this.$store.dispatch(
+          'patchProductDetail',
+          this.productData
+        )
+
+        if (result) {
           this.toggleModal()
-        }, 100)
-      } else {
+        }
+      }
+      // product creation
+      else {
         // await this.$store.commit('setProducts', this.productData)
         const result = await this.$store.dispatch(
           'createProductDetail',

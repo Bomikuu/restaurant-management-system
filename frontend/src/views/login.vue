@@ -72,7 +72,7 @@ export default {
 
       const result = await this.$store.dispatch('loginUser', payload)
       if (result.data) {
-        this.$router.push('/dashboard')
+        this.$router.push('/dashboard/index')
       } else {
         // do error message
       }
@@ -95,7 +95,7 @@ export default {
   height: 100%;
   opacity: 0.9;
   z-index: -1;
-  background-color: #dda02c;
+  background-color: #fff;
 }
 
 .login-logo {
