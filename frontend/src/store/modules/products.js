@@ -1,57 +1,83 @@
+import { getFormData } from '@/utils/utils'
+import API from '@/utils/utils'
+import axios from 'axios'
+
 export default {
   state: {
-    products: [
-      {
-        id: 0,
-        name: "Buttered Chicken",
-        price: "200.00",
-        description: "I am a chicken",
-        image: "1.jpeg",
-      },
-      {
-        id: 1,
-        name: "Roasted Chicken",
-        price: "250.00",
-        description: "I am a chicken",
-        image: "2.jpg",
-      },
-      {
-        id: 2,
-        name: "Roasted Chicken BBQ",
-        price: "300.00",
-        description: "I am a chicken",
-        image: "3.jpeg",
-      },
-      {
-        id: 3,
-        name: "Chicken Fries with Gulay",
-        price: "350.00",
-        description: "I am a chicken",
-        image: "4.jpeg",
-      },
-      {
-        id: 4,
-        name: "Chicken Parmesan with Fries",
-        price: "200.00",
-        description: "I am a chicken",
-        image: "5.jpg",
-      },
-    ],
+    namespaced: true,
+    products: [],
+    productFilter: ''
   },
   getters: {
     getActiveProducts(state) {
-      return state.products.filter((prod) => {
-        return prod.status !== "Archieved";
-      });
+      return state.products.filter(prod => {
+        return prod.status !== 2
+      })
     },
+    getFilteredProducts(state) {
+      return state.products.filter(prod => {
+        return prod.status === state.productFilter
+      })
+    }
   },
   mutations: {
     setProducts(state, product) {
-      state.products.unshift(product);
+      state.products.unshift(product)
     },
     setAllProducts(state, product) {
-      state.products = product;
+      state.products = product
     },
+    setProductFilterMode(state, value) {
+      state.productFilter = value
+    }
   },
-  actions: {},
-};
+  actions: {
+    fetchProductList({ commit, rootState }) {
+      const token = rootState.currentUser.access
+
+      API.getAPI('products/', token).then(response => {
+        commit('setAllProducts', response.data)
+      })
+    },
+    getProductDetail() {},
+    async createProductDetail({ dispatch, rootState }, params) {
+      const token = rootState.currentUser.access
+      const formData = getFormData(params)
+
+      return await API.postAPI('products/', formData, token).then(response => {
+        console.log(response)
+        if (response) {
+          dispatch('fetchProductList')
+        }
+        return response
+      })
+    },
+    patchProductDetail({ rootState, dispatch }, data) {
+      const token = rootState.currentUser.access
+      const formData = getFormData(data)
+
+      const headers = { 'Content-Type': 'application/json' }
+      if (token) {
+        headers['authorization'] = `Bearer ${token}`
+      }
+
+      console.log(data)
+
+      return axios
+        .patch(`/api/products/${data.id}/`, formData, {
+          headers: headers
+        })
+        .then(response => {
+          console.log('PUT', response)
+          return response
+        })
+        .finally(() => {
+          dispatch('fetchProductList')
+        })
+        .catch(error => {
+          console.log(error)
+          return error
+        })
+    }
+  }
+}

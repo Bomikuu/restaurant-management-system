@@ -70,22 +70,32 @@ export default {
       {
         icon: 'mdi-view-dashboard',
         title: 'Dashboard',
-        to: '/admin/index'
+        to: '/dashboard/index'
       },
       {
         icon: 'mdi-view-quilt-outline',
         title: 'Products',
-        to: '/admin/products'
+        to: '/dashboard/products'
       },
       {
         icon: 'mdi-format-list-bulleted-square',
         title: 'Inventory',
-        to: '/admin/inventory'
+        to: '/dashboard/inventory'
       },
       {
         icon: 'mdi-cog-outline',
         title: 'Settings',
-        to: '/admin/settings'
+        to: '/dashboard/settings'
+      },
+      {
+        icon: 'mdi-account',
+        title: 'Users',
+        to: '/dashboard/users'
+      },
+      {
+        icon: 'mdi-account-key',
+        title: 'Roles',
+        to: '/dashboard/roles'
       }
     ]
   }),
@@ -138,12 +148,12 @@ export default {
       width: 20px
 
       +ltr()
-        margin-right: 24px
-        margin-left: 12px !important
+      margin-right: 24px
+      margin-left: 12px !important
 
       +rtl()
-        margin-left: 24px
-        margin-right: 12px !important
+      margin-left: 24px
+      margin-right: 12px !important
 
   .v-list--dense
     .v-list-item
@@ -154,17 +164,17 @@ export default {
   .v-list-group--sub-group
     .v-list-item
       +ltr()
-        padding-left: 8px
+      padding-left: 8px
 
       +rtl()
-        padding-right: 8px
+      padding-right: 8px
 
     .v-list-group__header
       +ltr()
-        padding-right: 0
+      padding-right: 0
 
       +rtl()
-        padding-right: 0
+      padding-right: 0
 
       .v-list-item__icon--text
         margin-top: 19px
@@ -174,8 +184,8 @@ export default {
         order: 2
 
         +ltr()
-          margin-right: 8px
+        margin-right: 8px
 
         +rtl()
-          margin-left: 8px
+        margin-left: 8px
 </style>

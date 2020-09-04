@@ -1,28 +1,16 @@
 <template>
   <v-app-bar id="app-bar" absolute app color="transparent" flat height="75">
     <v-btn class="mr-3" elevation="1" fab small @click="setDrawer(!drawer)">
-      <v-icon v-if="value">
-        mdi-view-quilt
-      </v-icon>
+      <v-icon v-if="value">mdi-view-quilt</v-icon>
 
-      <v-icon v-else>
-        mdi-dots-vertical
-      </v-icon>
+      <v-icon v-else>mdi-dots-vertical</v-icon>
     </v-btn>
 
-    <v-toolbar-title
-      class="hidden-sm-and-down font-weight-light"
-      v-text="$route.name"
-    />
+    <v-toolbar-title class="hidden-sm-and-down font-weight-light" v-text="$route.name" />
 
     <v-spacer />
 
-    <v-text-field
-      :label="$t('search')"
-      color="secondary"
-      hide-details
-      style="max-width: 165px;"
-    >
+    <v-text-field :label="$t('search')" color="secondary" hide-details style="max-width: 165px;">
       <template v-if="$vuetify.breakpoint.mdAndUp" v-slot:append-outer>
         <v-btn class="mt-n2" elevation="1" fab small>
           <v-icon>mdi-magnify</v-icon>
@@ -32,17 +20,11 @@
 
     <div class="mx-3" />
 
-    <v-btn class="ml-2" min-width="0" text to="/">
+    <v-btn class="ml-2" min-width="0" text to="/dashboard/index">
       <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
 
-    <v-menu
-      bottom
-      left
-      offset-y
-      origin="top right"
-      transition="scale-transition"
-    >
+    <v-menu bottom left offset-y origin="top right" transition="scale-transition">
       <template v-slot:activator="{ attrs, on }">
         <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
           <v-badge color="red" overlap bordered>
@@ -64,9 +46,59 @@
       </v-list>
     </v-menu>
 
-    <v-btn class="ml-2" min-width="0" text to="/pages/user">
-      <v-icon>mdi-account</v-icon>
-    </v-btn>
+    <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-card>
+        <v-list>
+          <v-list-item>
+            <v-list-item-avatar>
+              <img src="@/assets/images/Mico.jpg" alt="User" />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>Mico D. Ang</v-list-item-title>
+              <v-list-item-subtitle>Product Manager</v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+
+        <v-list expand nav>
+          <!-- Style cascading bug  -->
+          <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
+          <div />
+
+          <template v-for="(item, i) in computedItems">
+            <base-item-group
+              v-if="item.children"
+              :key="`group-${i}`"
+              :item="item"
+              @click="menuItemClick(item)"
+            >
+              <!--  -->
+            </base-item-group>
+
+            <base-item v-else :key="`item-${i}`" :item="item" />
+          </template>
+
+          <!-- Style cascading bug  -->
+          <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
+          <div />
+        </v-list>
+      </v-card>
+    </v-menu>
   </v-app-bar>
 </template>
 
@@ -122,17 +154,49 @@ export default {
       "You're now friends with Andrew",
       'Another Notification',
       'Another one'
+    ],
+    showDialog: false,
+    items: [
+      {
+        icon: 'mdi-cog-outline',
+        title: 'Account Setting',
+        to: '/dashboard/settings'
+      },
+      {
+        icon: 'mdi-clipboard-list',
+        title: 'Django Admin',
+        href: '/admin'
+      },
+      {
+        icon: 'mdi-logout-variant',
+        title: 'Logout',
+        to: undefined
+      }
     ]
   }),
 
   computed: {
-    ...mapState(['drawer'])
+    ...mapState(['drawer']),
+    computedItems() {
+      return this.items.map(this.mapItem)
+    }
   },
 
   methods: {
     ...mapMutations({
       setDrawer: 'SET_DRAWER'
-    })
+    }),
+
+    mapItem(item) {
+      return {
+        ...item,
+        children: item.children ? item.children.map(this.mapItem) : undefined,
+        title: this.$t(item.title)
+      }
+    },
+    menuItemClick(item) {
+      console.log(item)
+    }
   }
 }
 </script>

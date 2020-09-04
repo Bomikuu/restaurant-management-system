@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -rf node_modules package-lock.json && npm install
+npm install
 rm -rf .cache
 npm cache clean -f
 
