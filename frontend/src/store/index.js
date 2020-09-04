@@ -39,10 +39,9 @@ export default new Vuex.Store({
     },
 
     refreshToken({ commit, rootState }) {
-      const { email, password } = rootState.currentUser
+      const { refresh } = rootState.currentUser
       const payload = {
-        email,
-        password
+        refresh
       }
       return API.postAPI('token/refresh/', payload).then(response => {
         const userData = { ...payload, ...response.data }
