@@ -42,6 +42,24 @@ export default class Utils {
         console.log(error)
       })
   }
+
+  static patchAPI(url, params, token) {
+    console.log(params)
+    const headers = { 'Content-Type': 'application/json' }
+
+    if (token) {
+      headers['authorization'] = `Bearer ${token}`
+    }
+
+    return axios
+      .patch(url, params, { headers: headers })
+      .then(response => {
+        return response
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 }
 
 export const getFormData = payload => {
