@@ -3,42 +3,44 @@
     <v-main>
       <v-container class="fill-height login-container" fluid>
         <v-row align="center" justify="center">
-          <!-- <v-img
+          <v-col cols="12" sm="8" md="4">
+            <!-- <v-img
               class="login-logo"
               src="@/assets/images/gentry-logo.jpg"
               alt="Gentry Logo"
-          />-->
-          <v-card class="elevation-12">
-            <v-card-text class="login-input-container">
-              <div class="login-container-img">
-                <img src="@/assets/images/fast.jpg" />
-              </div>
-              <div class="login-container-input">
-                Sign In
-                <v-form ref="form">
-                  <v-text-field
-                    v-model="email"
-                    label="Login"
-                    name="login"
-                    prepend-icon="mdi-account"
-                    type="text"
-                    :rules="emailRules"
-                  ></v-text-field>
+            /> -->
+            <v-card class="elevation-12">
+              <v-card-text class="login-input-container">
+                <v-row>
+                  <v-col cols="12" md="6"
+                    ><v-img src="@/assets/login.jpg" alt="Gentry Logo" />
+                  </v-col>
+                  <v-col cols="12" md="4">
+                    <v-form>
+                      <v-text-field
+                        label="Login"
+                        name="login"
+                        prepend-icon="mdi-account"
+                        type="text"
+                      ></v-text-field>
 
-                  <v-text-field
-                    v-model="password"
-                    id="password"
-                    label="Password"
-                    name="password"
-                    prepend-icon="mdi-lock"
-                    type="password"
-                    :rules="passwordRules"
-                  ></v-text-field>
-                  <v-btn color="primary" @click="postUserLogin">Login</v-btn>
-                </v-form>
-              </div>
-            </v-card-text>
-          </v-card>
+                      <v-text-field
+                        id="password"
+                        label="Password"
+                        name="password"
+                        prepend-icon="mdi-lock"
+                        type="password"
+                      ></v-text-field>
+                    </v-form>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary">Login</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -46,41 +48,13 @@
 </template>
 
 <script>
-// import axios from 'axios'
 export default {
   props: {
     source: String
-  },
-  data() {
-    return {
-      email: '',
-      password: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
-      passwordRules: [v => !!v || 'Password is required']
-    }
-  },
-  methods: {
-    async postUserLogin() {
-      this.$refs.form.validate()
-      const payload = {
-        email: this.email,
-        password: this.password
-      }
-
-      const result = await this.$store.dispatch('loginUser', payload)
-      if (result.data) {
-        this.$router.push('/dashboard/index')
-      } else {
-        // do error message
-      }
-    }
   }
 }
 </script>
-<style lang="scss">
+<style>
 .login-container {
   position: relative;
   z-index: 1;
@@ -95,7 +69,8 @@ export default {
   height: 100%;
   opacity: 0.9;
   z-index: -1;
-  background-color: #fff;
+  background: url('../assets/login1.jpg');
+  background-size: contain;
 }
 
 .login-logo {
@@ -104,37 +79,7 @@ export default {
 }
 
 .login-input-container {
-  display: flex;
-  width: 750px;
-  height: 450px;
+  border: 1px solid red;
   padding: 0 !important;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  border-radius: 10px;
-
-  & > * {
-    flex: 0 0 50%;
-  }
-}
-
-.login-container-img {
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.login-container-input {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  padding: 2em 2em;
-}
-
-.copyright-text {
-  font-size: 1.2em;
-  font-weight: 700;
-  letter-spacing: 0.5px;
 }
 </style>

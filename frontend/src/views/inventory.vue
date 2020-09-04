@@ -1,35 +1,30 @@
 <template>
   <v-container fluid class="pa-0">
     <div class="main-container">
-      <v-row>
-        <v-col cols="12" md="8">
-          <v-text-field
-            v-model="searchFilter"
-            class="mb-4"
-            append-icon="mdi-magnify"
-            @input="searchQuery"
-            label="Search here to filter products..."
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-select :items="sortItems" filled label="Sort Records" dense @change="selectFilterMode"></v-select>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-select :items="sortMonths" filled label="Sort Month" dense @change="selectFilterMode"></v-select>
-        </v-col>
-      </v-row>
       <v-col cols="12">
         <base-material-card class="px-5 py-3">
           <template v-slot:heading>
-            <div class="display-2 font-weight-light">Inventory Status</div>
+            <div class="display-2 font-weight-light">
+              Inventory Status
+            </div>
 
-            <div class="subtitle-1 font-weight-light">Inventory on 15th September, 2020</div>
+            <div class="subtitle-1 font-weight-light">
+              Inventory on 15th September, 2020
+            </div>
           </template>
           <v-card-text>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
             <v-data-table
               :headers="headers"
               :items="getInventoryList"
               :items-per-page="5"
+              :search="search"
               @click:row="getCurrentItem"
             />
           </v-card-text>
@@ -79,21 +74,6 @@ export default {
           text: 'Quantity',
           value: 'quantity'
         }
-      ],
-      sortItems: ['All', 'Recent', 'Archived'],
-      sortMonths: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'October',
-        'September',
-        'November',
-        'December'
       ]
     }
   },

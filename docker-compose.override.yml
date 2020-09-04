@@ -4,9 +4,3 @@ services:
   nginx:
     ports:
       - 80:80
-    volumes:
-      - ./backend/media:/media
-
-  backend:
-    volumes:
-      - ./backend/media:/media

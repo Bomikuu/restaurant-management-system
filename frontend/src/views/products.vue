@@ -1,53 +1,26 @@
 <template>
   <div class="main-container">
-    <v-row>
-      <v-col cols="12" md="10">
-        <v-text-field
-          v-model="searchFilter"
-          class="mb-4"
-          append-icon="mdi-magnify"
-          @input="searchQuery"
-          label="Search here to filter products..."
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" md="2">
-        <v-select
-          item-text="name"
-          item-value="value"
-          :items="statusItems"
-          filled
-          label="Sort Products"
-          dense
-          @change="selectFilterMode"
-        ></v-select>
-      </v-col>
-    </v-row>
-
-    <div class="product-empty-container" v-if="getAllProducts.length === 0">
-      <template v-if="isFilterMode">
-        <img src="@/assets/images/search-not-found.png" />
-        <h4 class="empty-title">Sorry, no result found.</h4>
-        <span class="empty-subtitle">What you searched did not exist. Try searching again.</span>
-      </template>
+    <v-text-field
+      v-model="searchFilter"
+      class="mb-4"
+      append-icon="mdi-magnify"
+      @input="searchQuery"
+      label="Search here to filter products..."
+      hide-details
+    ></v-text-field>
+    <div class="product-list-container">
+      <div v-if="getAllProducts.length === 0">
+        Sorry, not found.
+      </div>
       <template v-else>
-        <img src="@/assets/images/boxes.svg" />
-        <h4 class="empty-title">No products found.</h4>
-        <span class="empty-subtitle">Current list of Product is empty. Add some product.</span>
+        <ProductItem
+          v-for="(product, index) in getAllProducts"
+          :key="`product-${product.name}-${index}`"
+          :get-current-product="getCurrentProduct"
+          :product="product"
+        ></ProductItem>
       </template>
     </div>
-
-    <div v-else class="product-list-container">
-      <ProductItem
-        v-for="(product, index) in getPaginatedItems"
-        :key="`product-${product.name}-${index}`"
-        :get-current-product="getCurrentProduct"
-        :product="product"
-      ></ProductItem>
-    </div>
-
-    <template v-if="getPaginaitonPages > 1">
-      <v-pagination v-model="currentPage" :length="getPaginaitonPages" circle></v-pagination>
-    </template>
 
     <div class="my-2 add-product-btn" @click="addNewProduct">
       <v-btn color="success" fab large dark>
@@ -67,7 +40,6 @@
 <script>
 import AddProductModal from '@/components/forms/addproduct.vue'
 import ProductItem from '@/components/items/productitem.vue'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -78,34 +50,12 @@ export default {
     return {
       showAddProduct: false,
       currentProduct: null,
-      searchFilter: '',
-      currentPage: 1,
-      itemsPerPage: 8,
-      statusItems: [
-        {
-          name: 'Availalbe',
-          value: 0
-        },
-        {
-          name: 'Unavailable',
-          value: 1
-        },
-        {
-          name: 'Archive',
-          value: 2
-        }
-      ]
+      searchFilter: ''
     }
   },
   computed: {
-    isFilterMode() {
-      return this.$store.state.products.productFilter !== ''
-    },
-    ...mapGetters(['getActiveProducts', 'getFilteredProducts']),
     getAllProducts() {
-      const getProduct = this.isFilterMode
-        ? this.getFilteredProducts
-        : this.getActiveProducts
+      const getProduct = this.$store.state.products.products
       if (this.searchFilter.length !== 0 && this.searchFilter !== '') {
         return getProduct.filter(prod => {
           return prod.name.toLowerCase().includes(this.searchFilter)
@@ -113,18 +63,7 @@ export default {
       } else {
         return getProduct
       }
-    },
-    getPaginaitonPages() {
-      return Math.ceil(this.getAllProducts.length / this.itemsPerPage)
-    },
-    getPaginatedItems() {
-      const getIndexNumber =
-        this.currentPage === 1 ? 0 : (this.currentPage - 1) * 8
-      return this.getAllProducts.slice(getIndexNumber, getIndexNumber + 8)
     }
-  },
-  mounted() {
-    this.$store.dispatch('fetchProductList')
   },
   methods: {
     addNewProduct() {
@@ -134,15 +73,13 @@ export default {
     toggleShowModal() {
       this.showAddProduct = !this.showAddProduct
     },
-    selectFilterMode(value) {
-      this.$store.commit('setProductFilterMode', value)
-    },
+
     getCurrentProduct(product) {
       this.currentProduct = product
       this.toggleShowModal()
     },
     searchQuery(value) {
-      this.searchFilter = value
+      this.searchFilter = value.toLowerCase()
     }
   }
 }
@@ -161,7 +98,7 @@ export default {
 
 .add-product-btn {
   position: fixed;
-  z-index: 1000;
+
   bottom: 2.5%;
   right: 2.5%;
 
@@ -171,34 +108,6 @@ export default {
   }
 }
 
-.product-empty-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  max-height: auto;
-
-  img {
-    width: 150px;
-    height: 150px;
-    box-shadow: 0 40px 40px -20px #8fc7d544;
-    object-fit: cover;
-  }
-
-  .empty-title {
-    font-size: 1.4em;
-    letter-spacing: 1px;
-    margin: 1.5em 0 0.5em 0;
-  }
-
-  .empty-subtitle {
-    font-size: 1.2em;
-    letter-spacing: 0.5px;
-    margin-bottom: 1em;
-  }
-}
 .product-list-container {
   display: flex;
   flex-wrap: wrap;
