@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/dashboard',
+    path: '/admin',
     component: () => import('@/views/dashboard/Index'),
     children: [
       {
@@ -32,28 +32,31 @@ const routes = [
         path: 'settings',
         name: 'Setting',
         component: () => import('@/views/settings.vue')
-      },
-      {
-        path: 'activities',
-        name: 'Activity Log',
-        component: () => import('@/views/activitylog.vue')
-      },
-      {
-        path: 'users',
-        name: 'User',
-        component: () => import('@/views/allUsers.vue')
-      },
-      {
-        path: 'roles',
-        name: 'Roles',
-        component: () => import('@/views/allRoles.vue')
       }
     ]
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login.vue')
+  },
+  {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/login.vue')
+    component: () => import('@/views/Login.vue')
+  },
+  // users_management
+  {
+    path: '/user/management/',
+    component: () => import('@/views/user_management/index.vue'),
+    children: [
+      // Pages
+      /* {
+        name: 'users_management',
+        path: 'home',
+        component: () => import('@/views/user_management/index.vue'),
+      }*/
+    ]
   }
 ]
 
