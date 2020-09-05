@@ -6,51 +6,62 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-row>
-            <v-col align="center" justify="center">
-              <div class="product-preview-img" elevation="4" cols="12">
-                <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
-                <img v-else :src="imgThumbnail" />
-                <v-btn
-                  class="upload-remove"
-                  v-if="productData.image !== null"
-                  color="error"
-                  @click="removeImg"
-                >Remove Image</v-btn>
-              </div>
-            </v-col>
+          <v-form ref="form">
+            <v-row>
+              <v-col align="center" justify="center">
+                <div class="product-preview-img" elevation="4" cols="12">
+                  <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
+                  <img v-else :src="imgThumbnail" />
+                  <v-btn
+                    class="upload-remove"
+                    v-if="productData.image !== null"
+                    color="error"
+                    @click="removeImg"
+                  >Remove Image</v-btn>
+                </div>
+              </v-col>
 
-            <v-col cols="12">
-              <v-file-input
-                v-model="productData.image"
-                accept="image/png, image/jpeg, image/bmp"
-                placeholder="Pick a Product Picture"
-                prepend-icon="mdi-camera"
-                label="Product Picture"
-                @change="fileChange"
-              ></v-file-input>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field v-model="productData.name" label="Product Name*" required></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field v-model="productData.price" label="Price*" required></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field v-model="productData.description" label="Description*" required></v-text-field>
-            </v-col>
+              <v-col cols="12">
+                <v-file-input
+                  v-model="productData.image"
+                  accept="image/png, image/jpeg, image/bmp"
+                  placeholder="Pick a Product Picture"
+                  prepend-icon="mdi-camera"
+                  label="Product Picture"
+                  @change="fileChange"
+                ></v-file-input>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="productData.name" label="Product Name*" :rules="rules.name"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="productData.price"
+                  type="number"
+                  label="Price*"
+                  :rules="rules.price"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="productData.description"
+                  label="Description*"
+                  :rules="rules.description"
+                ></v-text-field>
+              </v-col>
 
-            <v-col cols="12" sm="6">
-              <v-select
-                v-model="productData.status"
-                item-text="name"
-                item-value="value"
-                :items="statusItems"
-                label="Product Status"
-                required
-              ></v-select>
-            </v-col>
-          </v-row>
+              <v-col cols="12" sm="6">
+                <v-select
+                  v-model="productData.status"
+                  item-text="name"
+                  item-value="value"
+                  :items="statusItems"
+                  label="Product Status"
+                  required
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-container>
         <small>*indicates required field</small>
       </v-card-text>
@@ -97,7 +108,7 @@ export default {
         name: '',
         price: 0,
         description: '',
-        status: '',
+        status: 0,
         image: null
       },
       imgThumbnail: null,
@@ -114,7 +125,12 @@ export default {
           name: 'Archive',
           value: 2
         }
-      ]
+      ],
+      rules: {
+        name: [v => !!v || 'Product name is required'],
+        price: [v => !!v || 'Price is required'],
+        description: [v => !!v || 'Description is required']
+      }
     }
   },
   created() {
@@ -138,6 +154,9 @@ export default {
     }
   },
   methods: {
+    validateInputProduct() {
+      this
+    },
     fileChange(value) {
       if (value) {
         base64Encode(value)
@@ -154,34 +173,39 @@ export default {
       this.imgThumbnail = null
     },
     async submitData() {
-      //if on edit mode
-      if (this.productDetail) {
-        // const currentList = this.$store.state.products.products
-        // const currentIndex = currentList.indexOf(this.productDetail)
-        // currentList[currentIndex] = this.productData
-        // setTimeout(() => {
-        //   this.$store.commit('setAllProducts', currentList)
-        //   this.toggleModal()
-        // }, 100)
+      const isValid = this.$refs.form.validate()
 
-        const result = await this.$store.dispatch(
-          'patchProductDetail',
-          this.productData
-        )
+      if (isValid) {
+        //if on edit mode
+        if (this.productDetail) {
+          // const currentList = this.$store.state.products.products
+          // const currentIndex = currentList.indexOf(this.productDetail)
+          // currentList[currentIndex] = this.productData
+          // setTimeout(() => {
+          //   this.$store.commit('setAllProducts', currentList)
+          //   this.toggleModal()
+          // }, 100)
 
-        if (result) {
-          this.toggleModal()
+          const result = await this.$store.dispatch(
+            'patchProductDetail',
+            this.productData
+          )
+
+          if (result) {
+            this.toggleModal()
+          }
         }
-      }
-      // product creation
-      else {
-        // await this.$store.commit('setProducts', this.productData)
-        const result = await this.$store.dispatch(
-          'createProductDetail',
-          this.productData
-        )
-        if (result) {
-          this.toggleModal()
+        // product creation
+        else {
+          // await this.$store.commit('setProducts', this.productData)
+          const result = await this.$store.dispatch(
+            'createProductDetail',
+            this.productData
+          )
+          if (result) {
+            this.toggleModal()
+            this.$root.$emit('navigateToPage')
+          }
         }
       }
     }

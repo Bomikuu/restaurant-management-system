@@ -57,7 +57,7 @@
         <v-list>
           <v-list-item>
             <v-list-item-avatar>
-              <img src="@/assets/images/Mico.jpg" alt="User" />
+              <img class="avatar-img" src="@/assets/images/Mico.jpg" alt="User" />
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -200,3 +200,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.avatar-img {
+  object-fit: cover;
+}
+</style>

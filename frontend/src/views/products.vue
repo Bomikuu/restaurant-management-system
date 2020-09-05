@@ -37,12 +37,13 @@
     </div>
 
     <div v-else class="product-list-container">
-      <ProductItem
+      <div
+        class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12"
         v-for="(product, index) in getPaginatedItems"
         :key="`product-${product.name}-${index}`"
-        :get-current-product="getCurrentProduct"
-        :product="product"
-      ></ProductItem>
+      >
+        <ProductItem :get-current-product="getCurrentProduct" :product="product"></ProductItem>
+      </div>
     </div>
 
     <template v-if="getPaginaitonPages > 1">
@@ -108,7 +109,9 @@ export default {
         : this.getActiveProducts
       if (this.searchFilter.length !== 0 && this.searchFilter !== '') {
         return getProduct.filter(prod => {
-          return prod.name.toLowerCase().includes(this.searchFilter)
+          return prod.name
+            .toLowerCase()
+            .includes(this.searchFilter.toLowerCase())
         })
       } else {
         return getProduct
@@ -125,6 +128,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch('fetchProductList')
+
+    this.$root.$on('navigateToPage', () => {
+      this.currentPage = 1
+      console.log('GO BACK')
+    })
   },
   methods: {
     addNewProduct() {
@@ -206,17 +214,14 @@ export default {
   height: fit-content;
   max-height: auto;
 
-  & > * {
-    flex: 0 0 24%;
+  .product-container {
     height: 350px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 0 1em 1em 0;
-    background: #fff;
+
     color: #666;
     border-radius: 5px;
-    background-color: #fff;
     box-shadow: 0 40px 40px -20px #8fc7d544;
 
     .product-img-thumbnail {
@@ -275,7 +280,6 @@ export default {
     }
 
     &:hover {
-      background-color: #fff;
       box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 
       .product-img-thumbnail img {

@@ -25,7 +25,7 @@ export default {
       state.products.unshift(product)
     },
     setAllProducts(state, product) {
-      state.products = product
+      state.products = product.sort((a, b) => b.id - a.id)
     },
     setProductFilterMode(state, value) {
       state.productFilter = value
@@ -68,7 +68,6 @@ export default {
           headers: headers
         })
         .then(response => {
-          console.log('PUT', response)
           return response
         })
         .finally(() => {
