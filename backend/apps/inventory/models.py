@@ -19,6 +19,9 @@ class InventoryItem(SoftDeletionModel):
     status = models.IntegerField(choices=STATUS_CHOICES)
     quantity = models.IntegerField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(
+        verbose_name="Product Image", null=True, blank=True, default=None, upload_to="products/"
+    )
 
     def __str__(self):
         return self.name
