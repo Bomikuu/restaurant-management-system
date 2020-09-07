@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 
 from apps.user.urls import router as user_router
 from apps.product.urls import router as product_router
+from apps.inventory.urls import router as inventory_router
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -27,6 +28,7 @@ schema_view = get_schema_view(
 router = routers.DefaultRouter()
 router.registry.extend(product_router.registry)
 router.registry.extend(user_router.registry)
+router.registry.extend(inventory_router.registry)
 
 urlpatterns = [
     # APPS API

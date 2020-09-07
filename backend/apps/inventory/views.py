@@ -10,6 +10,16 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
     queryset = InventoryItem.objects.all()
     serializer_class = InventoryItemSerializer
 
+    def stock_in(self, request):
+        # add inventory item log
+        # call stock in method
+        pass
+
+    def stock_out(self, request):
+        # add inventory item log
+        # call stock in method
+        pass
+
 
 class InventoryItemLogViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)

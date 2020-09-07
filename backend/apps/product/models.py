@@ -3,6 +3,7 @@ from apps.soft_delete.models import SoftDeletionModel
 
 optional = {"blank": True, "null": True}
 
+
 class Product(SoftDeletionModel):
     STATUS_UNAVAILABLE = 0
     STATUS_AVAILABLE = 1
@@ -25,6 +26,5 @@ class Product(SoftDeletionModel):
     def __str__(self):
         return self.name
 
-    def __unicode__(self): 
+    def __unicode__(self):
         return self.name
-

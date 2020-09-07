@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "apps.user",
     "apps.product",
     "apps.soft_delete",
+    "apps.inventory",
     
     # THIRD-PARTY APPS
     "rest_framework",

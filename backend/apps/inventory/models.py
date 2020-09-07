@@ -18,9 +18,9 @@ class InventoryItem(SoftDeletionModel):
     name = models.CharField(max_length=100)
     status = models.IntegerField(choices=STATUS_CHOICES)
     quantity = models.IntegerField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
     image = models.ImageField(
-        verbose_name="Product Image", null=True, blank=True, default=None, upload_to="products/"
+        verbose_name="InventoryItem Image", null=True, blank=True, default=None, upload_to="inventory-item/"
     )
 
     def __str__(self):
@@ -44,8 +44,8 @@ class InventoryItemLog(SoftDeletionModel):
     quantity = models.IntegerField()
     log_type = models.CharField(max_length=20, choices=LOG_TYPE)
     remarks = models.CharField(max_length=100)
-    inventory_item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
-    logged_by = models.OneToOneField(UserProfile)
+    inventory_item = models.ForeignKey(InventoryItem, null=True, on_delete=models.SET_NULL)
+    logged_by = models.OneToOneField(UserProfile, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
