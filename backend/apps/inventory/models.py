@@ -29,6 +29,9 @@ class InventoryItem(SoftDeletionModel):
     def __unicode__(self):
         return self.name
 
+    def create_inventory_item_log():
+        pass
+
 
 class InventoryItemLog(SoftDeletionModel):
     STOCK_IN = "stock in"
