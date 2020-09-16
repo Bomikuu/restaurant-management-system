@@ -8,7 +8,8 @@ class InventoryItemAdmin(admin.ModelAdmin):
 
 
 class InventoryItemLogAdmin(admin.ModelAdmin):
-    list_display = ("name", "timestamp", "quantity", "log_type", "remarks", "inventory_item", "logged_by")
+    list_display = ("name", "timestamp", "quantity", "log_type",
+                    "remarks", "inventory_item", "logged_by")
     exclude = ['deleted_at']
 
 

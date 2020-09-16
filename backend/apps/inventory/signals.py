@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import InventoryItem, InventoryItemLog
+from .models import InventoryItem, InventoryItemLog  # noqa
 
 
 @receiver(post_save, sender=InventoryItem)

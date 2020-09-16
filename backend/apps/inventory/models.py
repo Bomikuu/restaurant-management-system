@@ -1,7 +1,8 @@
 from django.db import models
 from apps.soft_delete.models import SoftDeletionModel
-from apps.product.models import Product
 from apps.user.models import UserProfile
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class InventoryItem(SoftDeletionModel):
@@ -18,7 +19,6 @@ class InventoryItem(SoftDeletionModel):
     name = models.CharField(max_length=100)
     status = models.IntegerField(choices=STATUS_CHOICES)
     quantity = models.IntegerField()
-    product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
     image = models.ImageField(
         verbose_name="InventoryItem Image", null=True, blank=True, default=None, upload_to="inventory-item/"
     )
@@ -28,9 +28,6 @@ class InventoryItem(SoftDeletionModel):
 
     def __unicode__(self):
         return self.name
-
-    def create_inventory_item_log():
-        pass
 
 
 class InventoryItemLog(SoftDeletionModel):
@@ -47,11 +44,17 @@ class InventoryItemLog(SoftDeletionModel):
     quantity = models.IntegerField()
     log_type = models.CharField(max_length=20, choices=LOG_TYPE)
     remarks = models.CharField(max_length=100)
-    inventory_item = models.ForeignKey(InventoryItem, null=True, on_delete=models.SET_NULL)
-    logged_by = models.OneToOneField(UserProfile, null=True, on_delete=models.SET_NULL)
+    inventory_item = models.ForeignKey(
+        InventoryItem, null=True, on_delete=models.SET_NULL)
+    logged_by = models.OneToOneField(
+        UserProfile, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
+
+    @receiver(post_save, sender=InventoryItem)
+    def create_new_log(sender, instance, **kwargs):
+        print("create inventory item log")

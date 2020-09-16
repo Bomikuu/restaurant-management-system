@@ -1,4 +1,5 @@
 from django.db import models
+from apps.inventory.models import InventoryItem
 from apps.soft_delete.models import SoftDeletionModel
 
 optional = {"blank": True, "null": True}
@@ -22,6 +23,7 @@ class Product(SoftDeletionModel):
     image = models.ImageField(
         verbose_name="Product Image", null=True, blank=True, default=None, upload_to="products/"
     )
+    inventoryItem = models.ForeignKey(InventoryItem, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
