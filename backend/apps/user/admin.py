@@ -6,6 +6,7 @@ from .models import Account, UserProfile
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
+    exclude = ['deleted_at']
 
 
 class SoftDeletionAdmin(admin.ModelAdmin):
