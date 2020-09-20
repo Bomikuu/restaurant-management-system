@@ -3,6 +3,8 @@ from apps.soft_delete.models import SoftDeletionModel
 from apps.user.models import UserProfile
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from pudb import set_trace  # noqa
+import datetime
 
 
 class InventoryItem(SoftDeletionModel):
@@ -33,6 +35,8 @@ class InventoryItem(SoftDeletionModel):
 class InventoryItemLog(SoftDeletionModel):
     STOCK_IN = "stock in"
     STOCK_OUT = "stock out"
+    CREATE = "create"
+    DELETE = "delete"
 
     LOG_TYPE = (
         (STOCK_IN, "stock in"),
@@ -56,5 +60,11 @@ class InventoryItemLog(SoftDeletionModel):
         return self.name
 
     @receiver(post_save, sender=InventoryItem)
-    def create_new_log(sender, instance, **kwargs):
-        print("create inventory item log")
+    def create_new_log_signal(sender, instance, **kwargs):
+        new_log_instance = InventoryItemLog(name=instance.name,
+                                            timestamp=datetime.datetime.now(),
+                                            quantity=instance.quantity,
+                                            log_type="temp",  # TODO
+                                            logged_by=None)  # TODO
+        new_log_instance.save()
+        print("new inventory log created")
