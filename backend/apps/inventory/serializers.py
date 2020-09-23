@@ -18,7 +18,6 @@ class InventoryItemSerializer(serializers.ModelSerializer):
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.image = validated_data.get('image', instance.image)
         instance.save()
-
         return instance
 
 

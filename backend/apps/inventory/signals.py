@@ -5,4 +5,5 @@ from .models import InventoryItem, InventoryItemLog  # noqa
 
 @receiver(post_save, sender=InventoryItem)
 def create_new_log(sender, instance, **kwargs):
+    # method unused. Go to models.InventoryItemLog instead
     print("create inventory item log")
