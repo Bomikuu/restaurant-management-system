@@ -15,9 +15,14 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def generate_report(self, request):
         print("generate report")
-        # TODO generate report
 
-        return Response({'status': 'report generated'})
+        # TODO generate report
+        # temp implementation
+        inventoryItems = InventoryItem.objects.all()
+        serialized_inventoryItems = InventoryItemSerializer(
+            inventoryItems, many=True)
+
+        return Response({'inventoryItems': serialized_inventoryItems.data})
 
 
 class InventoryItemLogViewSet(viewsets.ModelViewSet):
