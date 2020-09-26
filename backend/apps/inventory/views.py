@@ -26,23 +26,15 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def stock_in(self, request):
-        inventoryItemName = InventoryItem.objects.filter(
-            id=request.data['id']).first()
-        updatedQuantity = inventoryItemName.quantity + \
-            int(request.data['quantity'])
         InventoryItem.objects.filter(id=request.data['id']).update(
-            quantity=updatedQuantity)
+            status=1)  # status == 1 stands for AVAILABLE
 
         return Response({'status': 'stock in successful'})
 
     @action(detail=False, methods=['post'])
     def stock_out(self, request):
-        inventoryItemName = InventoryItem.objects.filter(
-            id=request.data['id']).first()
-        updatedQuantity = inventoryItemName.quantity - \
-            int(request.data['quantity'])
         InventoryItem.objects.filter(id=request.data['id']).update(
-            quantity=updatedQuantity)
+            status=0)  # status == 0 stands for UNAVAILABLE
 
         return Response({'status': 'stock out successful'})
 
