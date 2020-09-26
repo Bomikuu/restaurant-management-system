@@ -17,7 +17,6 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
         print("generate report")
 
         # TODO generate report
-        # temp implementation
         inventoryItems = InventoryItem.objects.all()
         serialized_inventoryItems = InventoryItemSerializer(
             inventoryItems, many=True)
