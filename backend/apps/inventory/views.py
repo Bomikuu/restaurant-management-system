@@ -24,6 +24,28 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
 
         return Response({'inventoryItems': serialized_inventoryItems.data})
 
+    @action(detail=False, methods=['post'])
+    def stock_in(self, request):
+        inventoryItemName = InventoryItem.objects.filter(
+            id=request.data['id']).first()
+        updatedQuantity = inventoryItemName.quantity + \
+            int(request.data['quantity'])
+        InventoryItem.objects.filter(id=request.data['id']).update(
+            quantity=updatedQuantity)
+
+        return Response({'status': 'stock in successful'})
+
+    @action(detail=False, methods=['post'])
+    def stock_out(self, request):
+        inventoryItemName = InventoryItem.objects.filter(
+            id=request.data['id']).first()
+        updatedQuantity = inventoryItemName.quantity - \
+            int(request.data['quantity'])
+        InventoryItem.objects.filter(id=request.data['id']).update(
+            quantity=updatedQuantity)
+
+        return Response({'status': 'stock out successful'})
+
 
 class InventoryItemLogViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
