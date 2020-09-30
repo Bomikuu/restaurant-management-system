@@ -22,7 +22,7 @@
                     name="login"
                     prepend-icon="mdi-account"
                     type="text"
-                    :rules="emailRules"
+                    :rules="rules.email"
                   ></v-text-field>
 
                   <v-text-field
@@ -32,9 +32,9 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
-                    :rules="passwordRules"
+                    :rules="rules.password"
                   ></v-text-field>
-                  <v-btn color="primary" @click="postUserLogin">Login</v-btn>
+                  <v-btn color="primary" @click="validateLogin">Login</v-btn>
                 </v-form>
               </div>
             </v-card-text>
@@ -55,16 +55,24 @@ export default {
     return {
       email: '',
       password: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
-      passwordRules: [v => !!v || 'Password is required']
+      rules: {
+        email: [
+          v => !!v || 'Email is required',
+          v =>
+            !v ||
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+            'E-mail must be valid'
+        ],
+        role: [v => !!v || 'Role is required'],
+        password: [
+          v => !!v || 'Password is required',
+          v => v.length > 7 || 'Password must be at least 6 characters'
+        ]
+      }
     }
   },
   methods: {
     async postUserLogin() {
-      this.$refs.form.validate()
       const payload = {
         email: this.email,
         password: this.password
@@ -75,6 +83,12 @@ export default {
         this.$router.push('/dashboard/index')
       } else {
         // do error message
+      }
+    },
+    validateLogin() {
+      const isValid = this.$refs.form.validate()
+      if (isValid) {
+        this.postUserLogin()
       }
     }
   }
