@@ -85,16 +85,17 @@ export default {
       statusItems: [
         {
           name: 'Availalbe',
-          value: 0
+          value: 1
         },
         {
           name: 'Unavailable',
-          value: 1
+          value: 0
         },
         {
           name: 'Archive',
           value: 2
-        }
+        },
+        
       ]
     }
   },
@@ -131,7 +132,6 @@ export default {
 
     this.$root.$on('navigateToPage', () => {
       this.currentPage = 1
-      console.log('GO BACK')
     })
   },
   methods: {
@@ -211,8 +211,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  height: fit-content;
-  max-height: auto;
+  height: 1000px;
+  max-height: 1000px;
 
   .product-container {
     height: 350px;

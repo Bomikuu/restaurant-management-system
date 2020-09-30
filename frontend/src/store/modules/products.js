@@ -11,7 +11,7 @@ export default {
   getters: {
     getActiveProducts(state) {
       return state.products.filter(prod => {
-        return prod.status !== 2
+        return prod.status === 1
       })
     },
     getFilteredProducts(state) {
@@ -36,7 +36,11 @@ export default {
       const token = rootState.currentUser.access
 
       API.getAPI('products/', token).then(response => {
-        commit('setAllProducts', response.data)
+        commit('setAllProducts', [])
+        setTimeout(() => {
+          commit('setAllProducts', response.data)
+        }, 100)
+        
       })
     },
     getProductDetail() {},
@@ -60,9 +64,7 @@ export default {
       if (token) {
         headers['authorization'] = `Bearer ${token}`
       }
-
-      console.log(data)
-
+      
       return axios
         .patch(`/api/products/${data.id}/`, formData, {
           headers: headers

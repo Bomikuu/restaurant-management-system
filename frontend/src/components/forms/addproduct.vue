@@ -10,14 +10,19 @@
             <v-row>
               <v-col align="center" justify="center">
                 <div class="product-preview-img" elevation="4" cols="12">
-                  <img v-if="productData.image === null" class src="@/assets/images/food.svg" />
+                  <img
+                    v-if="productData.image === null"
+                    class
+                    src="@/assets/images/food.svg"
+                  />
                   <img v-else :src="imgThumbnail" />
                   <v-btn
                     class="upload-remove"
                     v-if="productData.image !== null"
                     color="error"
                     @click="removeImg"
-                  >Remove Image</v-btn>
+                    >Remove Image</v-btn
+                  >
                 </div>
               </v-col>
 
@@ -29,16 +34,22 @@
                   prepend-icon="mdi-camera"
                   label="Product Picture"
                   @change="fileChange"
+                  :rules="rules.image"
                 ></v-file-input>
               </v-col>
               <v-col cols="12">
-                <v-text-field v-model="productData.name" label="Product Name*" :rules="rules.name"></v-text-field>
+                <v-text-field
+                  v-model="productData.name"
+                  label="Product Name*"
+                  :rules="rules.name"
+                ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="productData.price"
                   type="number"
                   label="Price*"
+                  min="1"
                   :rules="rules.price"
                 ></v-text-field>
               </v-col>
@@ -67,7 +78,9 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="showDialog = false">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="showDialog = false"
+          >Close</v-btn
+        >
         <v-btn color="blue darken-1" text @click="submitData">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -106,7 +119,7 @@ export default {
     return {
       productData: {
         name: '',
-        price: 0,
+        price: 1,
         description: '',
         status: 0,
         image: null
@@ -114,12 +127,12 @@ export default {
       imgThumbnail: null,
       statusItems: [
         {
-          name: 'Availalbe',
-          value: 0
+          name: 'Available',
+          value: 1
         },
         {
           name: 'Unavailable',
-          value: 1
+          value: 0
         },
         {
           name: 'Archive',
@@ -129,7 +142,8 @@ export default {
       rules: {
         name: [v => !!v || 'Product name is required'],
         price: [v => !!v || 'Price is required'],
-        description: [v => !!v || 'Description is required']
+        description: [v => !!v || 'Description is required'],
+        image: [v => !!v || 'Product Image is required']
       }
     }
   },
@@ -154,9 +168,6 @@ export default {
     }
   },
   methods: {
-    validateInputProduct() {
-      this
-    },
     fileChange(value) {
       if (value) {
         base64Encode(value)
@@ -178,26 +189,22 @@ export default {
       if (isValid) {
         //if on edit mode
         if (this.productDetail) {
-          // const currentList = this.$store.state.products.products
-          // const currentIndex = currentList.indexOf(this.productDetail)
-          // currentList[currentIndex] = this.productData
-          // setTimeout(() => {
-          //   this.$store.commit('setAllProducts', currentList)
-          //   this.toggleModal()
-          // }, 100)
+          const currentList = this.$store.state.products.products
+          const currentIndex = currentList.indexOf(this.productDetail)
+          currentList[currentIndex] = this.productData
+          setTimeout(() => {
+            const result = this.$store.dispatch(
+              'patchProductDetail',
+              this.productData
+            )
 
-          const result = await this.$store.dispatch(
-            'patchProductDetail',
-            this.productData
-          )
-
-          if (result) {
-            this.toggleModal()
-          }
+            if (result) {
+              this.toggleModal()
+            }
+          }, 100)
         }
         // product creation
         else {
-          // await this.$store.commit('setProducts', this.productData)
           const result = await this.$store.dispatch(
             'createProductDetail',
             this.productData
