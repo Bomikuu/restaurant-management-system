@@ -16,11 +16,7 @@
               ></v-select>
             </v-col>
             <v-col cols="12">
-              <v-text-field
-                v-model="inventoryData.quantity"
-                label="Quantity*"
-                required
-              ></v-text-field>
+              <v-text-field v-model="inventoryData.quantity" label="Quantity*" required></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="4">
               <v-dialog
@@ -40,15 +36,8 @@
                 </template>
                 <v-date-picker v-model="inventoryData.date" scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="showDateModal = false"
-                    >Cancel</v-btn
-                  >
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.dialog.save(inventoryData.date)"
-                    >OK</v-btn
-                  >
+                  <v-btn text color="primary" @click="showDateModal = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.dialog.save(inventoryData.date)">OK</v-btn>
                 </v-date-picker>
               </v-dialog>
             </v-col>
@@ -58,9 +47,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="showDialog = false"
-          >Close</v-btn
-        >
+        <v-btn color="blue darken-1" text @click="showDialog = false">Close</v-btn>
         <v-btn color="blue darken-1" text @click="submitData">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -72,55 +59,72 @@ export default {
   props: {
     showDialog: {
       type: Boolean,
-      default: false,
+      default: false
     },
     toggleModal: {
       type: Function,
       default: () => {
-        return {};
-      },
+        return {}
+      }
     },
     itemDetail: {
       type: Object,
       default: () => {
-        return null;
-      },
-    },
+        return null
+      }
+    }
   },
   data: () => {
     return {
       inventoryData: {
-        product: "",
+        product: '',
         quantity: 0,
-        date: "",
+        date: ''
       },
-      showDateModal: false,
-    };
+      showDateModal: false
+    }
   },
   computed: {
     getProductList() {
-      return this.$store.state.products.products.map((prod) => {
-        return prod.name;
-      });
-    },
+      return this.$store.state.products.products.map(prod => {
+        return prod.name
+      })
+    }
   },
   methods: {
     async submitData() {
+      // if on edit mode
       if (this.itemDetail) {
-        const currentList = this.$store.state.products.products;
-        const currentIndex = currentList.indexOf(this.productDetail);
-        currentList[currentIndex] = this.productData;
+        const currentList = this.$store.state.products.products
+        const currentIndex = currentList.indexOf(this.productDetail)
+        currentList[currentIndex] = this.productData
         setTimeout(() => {
-          this.$store.commit("setAllProducts", currentList);
-        }, 100);
+          this.$store.commit('setAllProducts', currentList)
+        }, 100)
+
+        const result = await this.$store.dispatch(
+          'patchInventoryDetail',
+          this.inventoryData
+        )
+
+        if (result) {
+          this.toggleModal()
+        }
       } else {
-        await this.$store.commit("setInventoryItem", this.inventoryData);
+        const result = await this.$store.dispatch(
+          'createInventoryDetail',
+          this.inventoryData
+        )
+        if (result) {
+          this.toggleModal()
+          // this.$root.$emit('navigateToPage')
+        }
       }
 
-      this.toggleModal();
-    },
-  },
-};
+      this.toggleModal()
+    }
+  }
+}
 </script>
 
 <style></style>

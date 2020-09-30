@@ -68,6 +68,7 @@ export const getFormData = payload => {
   Object.entries(payload).map(data => {
     if (isEditMode && data[0] === 'image' && !(data[1] instanceof File)) {
       // do nothing
+      
     } else {
       formData.append(data[0], data[1])
     }
